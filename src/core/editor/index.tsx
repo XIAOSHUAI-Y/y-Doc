@@ -9,8 +9,15 @@ import { WebsocketProvider } from 'y-websocket';
 import { useCallback, useRef } from 'react';
 import { Nodes } from './nodes';
 import './editor.css';
+import {
+	$createParagraphNode,
+	$createTextNode,
+	$getRoot,
+	type LexicalEditor,
+} from 'lexical';
+import { $createHeadingNode } from '@lexical/rich-text';
 
-export function Editor() {
+export function Editor({ id }: { id: string }) {
 	const containerRef = useRef<HTMLDivElement>(null);
 
 	function getRandomCursorColor() {
@@ -29,6 +36,26 @@ export function Editor() {
 		return color;
 	}
 
+	// 修改初始内容设置部分（正确使用 Lexical 节点的 append 方法）
+	const initialEditorState = useCallback((editor: LexicalEditor) => {
+		editor.update(() => {
+			const root = $getRoot(); // 获取根节点（RootNode）
+			// 检查根节点是否为空
+			if (root.getFirstChild() === null) {
+				// 1. 创建标题节点并添加文本
+				const heading = $createHeadingNode('h1');
+				const headingText = $createTextNode('未命名文档');
+				heading.append(headingText); // 向标题节点添加文本
+				root.append(heading); // 向根节点添加标题
+
+				// 2. 创建段落节点并添加文本
+				const paragraph = $createParagraphNode();
+				const paragraphText = $createTextNode('在此开始编辑...');
+				paragraph.append(paragraphText); // 向段落节点添加文本
+				root.append(paragraph); // 向根节点添加段落
+			}
+		});
+	}, []);
 	const initialConfig = {
 		// NOTE: This is critical for collaboration plugin to set editor state to null. It
 		// would indicate that the editor should not try to set any default state
@@ -40,6 +67,7 @@ export function Editor() {
 			throw error;
 		},
 		theme: {},
+		onInitialize: initialEditorState, // 添加初始化回调
 	};
 
 	const providerFactory = useCallback(
@@ -67,9 +95,7 @@ export function Editor() {
 			<LexicalComposer initialConfig={initialConfig}>
 				<RichTextPlugin
 					contentEditable={<ContentEditable className='editor-input' />}
-					placeholder={
-						<div className='editor-placeholder'></div>
-					}
+					placeholder={<div className='editor-placeholder'></div>}
 					ErrorBoundary={LexicalErrorBoundary}
 				/>
 				<CollaborationPlugin

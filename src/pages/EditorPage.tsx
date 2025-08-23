@@ -2,7 +2,6 @@
 import { useParams, useNavigate } from 'react-router-dom'; // 替换a标签为useNavigate（React路由规范）
 import { Editor } from '../core/editor';
 import { useUserStore } from '../store/userStore';
-// import './editorpage.css';
 import './ed.css';
 
 export default function EditorPage() {
@@ -226,40 +225,10 @@ export default function EditorPage() {
 						{/* 将Editor组件嵌入到内容容器中 */}
 						<Editor
 							id={docId}
-							className='editor-core'
-							// initialContent={`
-              //   <h1 class="text-3xl font-bold mb-6">项目概述</h1>
-              //   <p class="mb-4">本项目旨在开发一款款面向面向学生群体的Web端富文本编辑器...</p>
-              // `}
-							// onContentChange={(content) => {
-							// 	// 处理内容变化逻辑，如自动保存
-							// 	console.log('内容已更新', content);
-							// }}
 						/>
-						{/* <div
-							id='editor-content'
-							contentEditable='true'>
-							<h1 className='text-3xl font-bold mb-6'>项目概述</h1>
-							<p className='mb-4'>
-								本项目旨在开发一款面向学生群体的Web端富文本编辑器，解决文档排版困难和协作编辑不便的核心痛点，提升学习和团队协作效率。编辑器将聚焦“轻量化、易上手、强协作”三大核心特性，适配学生在作业撰写、报告整理、小组项目协作等场景的需求。
-							</p>
-
-							<h2 className='text-2xl font-bold mt-8 mb-4'>背景分析</h2>
-							<p className='mb-4'>
-								随着在线教育的普及和小组作业的增多，学生对高效文档编辑和协作工具的需求日益增长。据2023年教育科技行业报告显示，85%的大学生在小组作业中会遇到“文档版本混乱”“排版耗时”“批注沟通低效”等问题，现有工具难以完全匹配学生的使用场景：
-							</p>
-							<p className='mb-4'>
-								一方面，专业办公级工具（如Office
-								365、飞书文档）功能冗余，学生常用功能仅占20%，复杂的操作逻辑增加了学习成本；另一方面，简易编辑器（如在线Markdown工具）虽轻量化，但缺乏可视化排版和实时协作能力，无法满足多人协同的需求。
-							</p>
-						</div> */}
 					</div>
 				</div>
 			</div>
-			{/* 3. Editor组件（若需嵌入编辑区，建议放在editor-content内，避免层级冲突） */}
-			{/* 若Editor是核心编辑逻辑，可替换contentEditable区域，示例：
-      <Editor id={docId} containerId="editor-content" />
-      */}
 		</div>
 	);
 }
