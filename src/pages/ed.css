@@ -1,0 +1,599 @@
+/* 全局样式变量 - 统一设计语言 */
+:root {
+  /* 颜色系统 */
+  --color-white: #ffffff;
+  --color-border-light: #e5e7eb;
+  --color-text-primary: #111827;
+  --color-text-secondary: #6b7280;
+  --color-text-tertiary: #9ca3af;
+  --color-primary: #2563eb;
+  --color-primary-light: rgba(37, 99, 235, 0.1);
+  --color-hover-light: #f3f4f6;
+  --color-neutral: #f9fafb;
+  --color-gray-50: #f9fafb;
+  --color-black-opacity-50: rgba(0, 0, 0, 0.5);
+  --color-success: #10b981;
+  
+  /* 阴影影系统 */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-button: 0 2px 4px rgba(37, 99, 235, 0.2);
+  
+  /* 间距系统（基于4px基准） */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-16: 64px;
+  
+  /* 圆角系统 */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+}
+
+/* 基础样式重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 页面基础样式 */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--color-text-primary);
+  line-height: 1.5;
+}
+
+/* 根容器样式 - 确保页面占满 */
+.editor-page-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* 占满视口高度 */
+  overflow: hidden;
+}
+
+/* 文档ID不存在时的提示样式 */
+.empty-tip {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  gap: var(--spacing-2);
+}
+
+.empty-tip i {
+  font-size: 24px;
+  color: var(--color-text-tertiary);
+}
+
+/* -------------- 顶部导航栏样式样式 -------------- */
+#top-navbar {
+  height: 60px;
+  border-bottom: 1px solid var(--color-border-light);
+  background-color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-4);
+  z-index: 10; /* 确保导航栏在编辑区上方 */
+}
+
+/* 左侧区域（返回按钮 + 文档标题） */
+#left-section {
+  display: flex;
+  align-items: center;
+}
+
+#back-button {
+  margin-right: var(--spacing-4);
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+#back-button:hover {
+  color: var(--color-primary);
+  background-color: var(--color-hover-light);
+}
+
+#document-title-container {
+  display: flex;
+  align-items: center;
+}
+
+#document-title {
+  font-size: 18px;
+  font-weight: 500;
+  border: none;
+  padding: var(--spacing-1) var(--spacing-2);
+  max-width: 240px;
+  outline: none;
+  background: transparent;
+  transition: border-bottom 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+#document-title:focus {
+  border-bottom: 2px solid var(--color-primary);
+}
+
+#save-status {
+  margin-left: var(--spacing-2);
+  font-size: 12px;
+  color: var(--color-success);
+  display: flex;
+  align-items: center;
+}
+
+#save-status::before {
+  content: "•";
+  margin-right: 2px;
+}
+
+/* 右侧区域（分享按钮 + 历史记录 + 协作者 + 个人头像头像） */
+#right-section {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+#share-button {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-1) var(--spacing-4);
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-shadow: var(--shadow-button);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+#share-button:hover {
+  background-color: #1e40af; /* 加深主色 */
+}
+
+#share-button i {
+  margin-right: var(--spacing-1);
+}
+
+/* 通用工具栏按钮基础样式 */
+.toolbar-button {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  transition: all 0.2s;
+  font-size: 16px;
+}
+
+.toolbar-button.active {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.toolbar-button:hover:not(.active) {
+  background-color: var(--color-hover-light);
+  color: var(--color-text-primary);
+}
+
+/* 协作者头像区域 */
+#collaborators {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-stack {
+  display: flex;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-white);
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: -8px; /* 头像堆叠效果 */
+  background-color: var(--color-hover-light);
+}
+
+/* 第一个头像不需要左边距 */
+.avatar-stack .avatar:first-child {
+  margin-left: 0;
+}
+
+/* 不同头像的差异化颜色 */
+.avatar-stack .avatar:nth-child(1) {
+  background-color: #dbeafe;
+  color: var(--color-primary);
+}
+
+.avatar-stack .avatar:nth-child(2) {
+  background-color: #f3e8ff;
+  color: #7c3aed;
+}
+
+.avatar-stack .avatar:nth-child(3) {
+  background-color: #dcfce7;
+  color: #10b981;
+}
+
+/* 添加协作者按钮 */
+#add-collaborator {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px dashed var(--color-text-tertiary);
+  background: transparent;
+  color: var(--color-text-tertiary);
+  margin-left: var(--spacing-1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  font-size: 12px;
+}
+
+#add-collaborator:hover {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-light);
+}
+
+/* 当前用户头像 */
+#user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.2);
+  transition: transform 0.2s;
+}
+
+#user-avatar:hover {
+  transform: scale(1.05);
+}
+
+/* -------------- 编辑区容器样式 -------------- */
+#editor-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* 占满剩余高度 */
+  overflow: hidden;
+  background-color: var(--color-neutral);
+}
+
+/* -------------- 编辑工具栏样式 -------------- */
+#editor-toolbar {
+  padding: var(--spacing-2);
+  border-bottom: 1px solid var(--color-border-light);
+  background-color: var(--color-white);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  overflow-x: auto; /* 工具栏过长时横向滚动 */
+  white-space: nowrap; /* 防止工具组分行 */
+  height: 52px;
+  z-index: 5;
+  scrollbar-width: thin; /* 优化滚动条（Firefox） */
+}
+
+/* 工具栏滚动条样式（Chrome/Safari） */
+#editor-toolbar::-webkit-scrollbar {
+  height: 4px;
+}
+
+#editor-toolbar::-webkit-scrollbar-thumb {
+  background-color: var(--color-text-tertiary);
+  border-radius: 2px;
+}
+
+/* 工具栏分组容器 */
+#text-format-group,
+#paragraph-format-group,
+#list-format-group,
+#insert-group,
+#view-options {
+  display: flex;
+  align-items: center;
+}
+
+/* 工具栏分割线 */
+.toolbar-divider {
+  width: 1px;
+  height: 24px;
+  background-color: var(--color-border-light);
+  margin: 0 var(--spacing-1);
+}
+
+/* 标题下拉框 */
+#heading-dropdown {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  margin-right: var(--spacing-1);
+}
+
+#heading-dropdown:hover {
+  background-color: var(--color-hover-light);
+}
+
+#heading-dropdown i {
+  margin-left: var(--spacing-1);
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+
+/* 文本颜色按钮特殊样式 */
+#text-color-button {
+  color: var(--color-primary);
+}
+
+/* 右侧视图选项对齐 */
+#editor-toolbar .flex-grow {
+  flex: 1; /* 占满剩余空间，将视图选项推到右侧 */
+}
+
+/* -------------- 编辑内容区样式 -------------- */
+#editor-content-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-8) var(--spacing-16);
+  background-color: var(--color-neutral);
+  scrollbar-width: thin; /* 优化滚动条（Firefox） */
+  height: 0;
+}
+
+/* 内容区滚动条样式（Chrome/Safari） */
+#editor-content-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+#editor-content-container::-webkit-scrollbar-thumb {
+  background-color: var(--color-text-tertiary);
+  border-radius: 3px;
+}
+
+/* 内容卡片容器（模拟文档纸张） */
+#editor-content-wrapper {
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  min-height: 100%;
+  padding: var(--spacing-10);
+  max-width: 1024px; /* 4xl宽度 */
+  margin: 0 auto;
+}
+
+/* 可编辑内容区 */
+#editor-content {
+  line-height: 1.7;
+  color: var(--color-text-primary);
+  outline: none; /* 移除聚焦轮廓 */
+  min-height: 200px; /* 确保空文档也有基础高度 */
+}
+
+/* 内容区标题样式 */
+#editor-content h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: var(--spacing-6);
+  color: var(--color-text-primary);
+}
+
+#editor-content h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: var(--spacing-8);
+  margin-bottom: var(--spacing-4);
+  color: var(--color-text-primary);
+}
+
+#editor-content h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: var(--spacing-6);
+  margin-bottom: var(--spacing-3);
+  color: var(--color-text-primary);
+  position: relative; /* 为评论气泡定位 */
+}
+
+/* 内容区段落样式 */
+#editor-content p {
+  margin-bottom: var(--spacing-4);
+  font-size: 16px;
+  color: var(--color-text-primary);
+}
+
+/* 内容区列表样式 */
+#editor-content ul.list-disc {
+  list-style-type: disc;
+  padding-left: var(--spacing-6);
+  margin-bottom: var(--spacing-4);
+}
+
+#editor-content ul.list-disc li {
+  margin-bottom: var(--spacing-2);
+  font-size: 16px;
+}
+
+/* 内容区表格样式 */
+#editor-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--spacing-6);
+  font-size: 16px;
+}
+
+#editor-content table th,
+#editor-content table td {
+  border: 1px solid var(--color-border-light);
+  padding: var(--spacing-2);
+  text-align: left;
+  vertical-align: middle;
+}
+
+#editor-content table thead tr {
+  background-color: var(--color-gray-50);
+}
+
+#editor-content table tbody tr:hover {
+  background-color: var(--color-hover-light);
+  transition: background-color 0.2s;
+}
+
+/* 内容区图片容器 */
+#editor-content .flex {
+  display: flex;
+  justify-content: center;
+  margin: var(--spacing-6) 0;
+}
+
+#editor-content .relative {
+  position: relative;
+  width: 80%; /* 4/5宽度 */
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+#editor-content img {
+  width: 100%;
+  height: auto;
+  display: block; /* 移除图片底部间隙 */
+  cursor: default;
+  user-select: none; /* 禁止选中图片 */
+}
+
+/* 图片底部文字遮罩 */
+#editor-content .absolute {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--color-black-opacity-50);
+  color: var(--color-white);
+  font-size: 12px;
+  padding: var(--spacing-1);
+  text-align: center;
+  backdrop-filter: blur(2px); /* 轻微模糊背景，增强文字可读性 */
+}
+
+/* 评论气泡 */
+.comment-bubble {
+  position: absolute;
+  top: -4px;
+  right: -16px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.comment-bubble:hover {
+  background-color: #1d4ed8; /* 加深主色 */
+}
+
+.comment-bubble i {
+  font-size: 10px;
+}
+
+/* 选中文本样式（自定义高亮色） */
+#editor-content ::selection {
+  background-color: var(--color-primary-light);
+  color: var(--color-text-primary);
+}
+
+/* -------------- 响应式适配 -------------- */
+@media (max-width: 768px) {
+  /* 缩小间距，适配移动端 */
+  :root {
+    --spacing-16: 24px;
+    --spacing-10: 24px;
+    --spacing-8: 16px;
+  }
+
+  #editor-content-wrapper {
+    max-width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  /* 隐藏部分非核心工具栏按钮 */
+  #insert-formula-button,
+  #align-justify-button {
+    display: none;
+  }
+
+  /* 文档标题最大宽度减小 */
+  #document-title {
+    max-width: 160px;
+  }
+}
+
+.editor-core {
+  width: 100%;
+  min-height: 100%; /* 确保有足够的编辑空间 */
+}
+
+/* 确保Editor组件内容继承原样式兼容 */
+.editor-core h1,
+.editor-core h2,
+.editor-core h3,
+.editor-core p,
+.editor-core ul,
+.editor-core table {
+  /* 继承原有内容区样式 */
+  margin: inherit;
+  padding: inherit;
+  font-size: inherit;
+}
