@@ -4,6 +4,7 @@ import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { CollaborationPlugin } from '@lexical/react/LexicalCollaborationPlugin';
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 import * as Y from 'yjs';
 import { WebsocketProvider } from 'y-websocket';
 import { useCallback, useRef } from 'react';
@@ -13,9 +14,24 @@ import {
 	$createParagraphNode,
 	$createTextNode,
 	$getRoot,
+	type EditorState,
 	type LexicalEditor,
 } from 'lexical';
 import { $createHeadingNode } from '@lexical/rich-text';
+import React from 'react';
+import type { Provider, UserState } from '@lexical/yjs';
+import { docTheme } from './theme/theme';
+
+function MyOnChangePlugin(props: { onChange: (editorState: EditorState) => void }) {
+	const [editor] = useLexicalComposerContext()
+	const { onChange } = props
+	React.useEffect(() => {
+		return editor.registerUpdateListener(({editorState}) => {
+			onChange(editorState)
+		})
+	}, [onChange, editor])
+	return null
+}
 
 export function Editor({ id }: { id: string }) {
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -57,35 +73,54 @@ export function Editor({ id }: { id: string }) {
 		});
 	}, []);
 	const initialConfig = {
-		// NOTE: This is critical for collaboration plugin to set editor state to null. It
-		// would indicate that the editor should not try to set any default state
-		// (not even empty one), and let collaboration plugin do it instead
 		editorState: null,
 		namespace: 'Demo',
 		nodes: [...Nodes],
 		onError: (error: Error) => {
 			throw error;
 		},
-		theme: {},
+		theme: docTheme,
 		onInitialize: initialEditorState, // 添加初始化回调
 	};
 
 	const providerFactory = useCallback(
-		(id: string, yjsDocMap: Map<string, Y.Doc>) => {
-			let doc = yjsDocMap.get(id);
+		(docId: string, yjsDocMap: Map<string, Y.Doc>): Provider => {
+			let doc = yjsDocMap.get(docId);
 			if (!doc) {
 				doc = new Y.Doc();
-				yjsDocMap.set(id, doc);
+				yjsDocMap.set(docId, doc);
 			}
 
-			return new WebsocketProvider(
+			const provider = new WebsocketProvider(
 				'ws://localhost:3000/collab',
-				'lexical',
+				docId,
 				doc,
 				{
 					connect: false,
 				}
-			) as WebsocketProvider;
+			);
+			// 监听连接状态
+      provider.on('status', (event) => {
+        console.log('协作连接状态:', event.status);
+      });
+
+      // 监听连接错误
+      provider.on('connection-error', (error) => {
+        console.error('协作连接错误:', error);
+      });
+			// 初始化用户状态，确保包含所有必要的属性
+			provider.awareness.setLocalState({
+				name: 'User-' + Math.random().toString(36).substring(2, 8),
+				color: getRandomCursorColor(),
+				anchorPos: null,
+				focusPos: null,
+				focusing: false,
+				awarenessData: {},
+			});
+			// 连接到协作服务器
+      provider.connect();
+
+      return provider as unknown as Provider;
 		},
 		[]
 	);
@@ -95,7 +130,7 @@ export function Editor({ id }: { id: string }) {
 			<LexicalComposer initialConfig={initialConfig}>
 				<RichTextPlugin
 					contentEditable={<ContentEditable className='editor-input' />}
-					placeholder={<div className='editor-placeholder'></div>}
+					placeholder={<div className='editor-placeholder'>Enter some text...</div>}
 					ErrorBoundary={LexicalErrorBoundary}
 				/>
 				<CollaborationPlugin
@@ -106,6 +141,7 @@ export function Editor({ id }: { id: string }) {
 					cursorsContainerRef={containerRef}
 				/>
 				<MarkdownShortcutPlugin />
+				<MyOnChangePlugin onChange={(editorState) => { console.log(editorState) }}/>
 			</LexicalComposer>
 		</div>
 	);

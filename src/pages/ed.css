@@ -302,7 +302,7 @@ body {
 
 /* -------------- 编辑工具栏样式 -------------- */
 #editor-toolbar {
-  padding: var(--spacing-2);
+  padding: 5px;
   border-bottom: 1px solid var(--color-border-light);
   background-color: var(--color-white);
   display: flex;
@@ -373,7 +373,7 @@ body {
 
 /* 右侧视图选项对齐 */
 #editor-toolbar .flex-grow {
-  flex: 1; /* 占满剩余空间，将视图选项推到右侧 */
+  flex: 1; 
 }
 
 /* -------------- 编辑内容区样式 -------------- */
