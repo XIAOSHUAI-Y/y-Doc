@@ -10,7 +10,7 @@ import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
 
-export const Nodes = [
+export const docNodes = [
 	CodeHighlightNode,
 	CodeNode,
 	HashtagNode,

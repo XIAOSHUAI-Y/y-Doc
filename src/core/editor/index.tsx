@@ -8,7 +8,7 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 import * as Y from 'yjs';
 import { WebsocketProvider } from 'y-websocket';
 import { useCallback, useRef } from 'react';
-import { Nodes } from './nodes';
+import { docNodes } from './nodes';
 import './editor.css';
 import {
 	$createParagraphNode,
@@ -75,7 +75,7 @@ export function Editor({ id }: { id: string }) {
 	const initialConfig = {
 		editorState: null,
 		namespace: 'Demo',
-		nodes: [...Nodes],
+		nodes: [...docNodes],
 		onError: (error: Error) => {
 			throw error;
 		},
