@@ -1,5 +1,22 @@
-export default function Toolbar() {
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { $getSelection, $isRangeSelection } from "lexical";
+import { $setBlocksType } from '@lexical/selection'
+import type React from "react";
+import { $createHeadingNode } from "@lexical/rich-text";
 
+
+export default function Toolbar() {
+  const [editor] = useLexicalComposerContext();
+
+  // 处理粗体切换
+  const toggleBold = (e: React.MouseEvent): void => {
+    editor.update(() => {
+      const selection = $getSelection()
+      if ($isRangeSelection(selection)) {
+        $setBlocksType(selection, () => $createHeadingNode('h1'))
+      }
+    })
+  }
 	return (
 		<>
 			<div id='editor-toolbar'>
@@ -13,7 +30,7 @@ export default function Toolbar() {
 						id='bold-button'
 						// className='toolbar-button active'
 						className={`toolbar-button active`}
-            onClick={() => toggleBold()}
+            onClick={toggleBold}
 						>
 						<i className='fa fa-bold'>B</i>
 					</button>
