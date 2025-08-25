@@ -3,14 +3,16 @@
   position: relative;
   width: 100%;
   height: 100%;
+  text-align: center;
 }
 
 .editor-input {
+  background-color: aqua;
   min-height: 100%;
   outline: none;
   padding: 0;
   margin: 0;
-  width: 100%;
+  width: 80%;
 }
 
 .editor-placeholder {

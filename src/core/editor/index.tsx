@@ -4,7 +4,7 @@ import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { CollaborationPlugin } from '@lexical/react/LexicalCollaborationPlugin';
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import * as Y from 'yjs';
 import { WebsocketProvider } from 'y-websocket';
 import { useCallback, useRef } from 'react';
@@ -21,16 +21,19 @@ import { $createHeadingNode } from '@lexical/rich-text';
 import React from 'react';
 import type { Provider, UserState } from '@lexical/yjs';
 import { docTheme } from './theme/theme';
+import Toolbar from '../../pages/components/editorToolbar';
 
-function MyOnChangePlugin(props: { onChange: (editorState: EditorState) => void }) {
-	const [editor] = useLexicalComposerContext()
-	const { onChange } = props
+function MyOnChangePlugin(props: {
+	onChange: (editorState: EditorState) => void;
+}) {
+	const [editor] = useLexicalComposerContext();
+	const { onChange } = props;
 	React.useEffect(() => {
-		return editor.registerUpdateListener(({editorState}) => {
-			onChange(editorState)
-		})
-	}, [onChange, editor])
-	return null
+		return editor.registerUpdateListener(({ editorState }) => {
+			onChange(editorState);
+		});
+	}, [onChange, editor]);
+	return null;
 }
 
 export function Editor({ id }: { id: string }) {
@@ -100,14 +103,14 @@ export function Editor({ id }: { id: string }) {
 				}
 			);
 			// 监听连接状态
-      provider.on('status', (event) => {
-        console.log('协作连接状态:', event.status);
-      });
+			provider.on('status', (event) => {
+				console.log('协作连接状态:', event.status);
+			});
 
-      // 监听连接错误
-      provider.on('connection-error', (error) => {
-        console.error('协作连接错误:', error);
-      });
+			// 监听连接错误
+			provider.on('connection-error', (error) => {
+				console.error('协作连接错误:', error);
+			});
 			// 初始化用户状态，确保包含所有必要的属性
 			provider.awareness.setLocalState({
 				name: 'User-' + Math.random().toString(36).substring(2, 8),
@@ -118,30 +121,41 @@ export function Editor({ id }: { id: string }) {
 				awarenessData: {},
 			});
 			// 连接到协作服务器
-      provider.connect();
+			provider.connect();
 
-      return provider as unknown as Provider;
+			return provider as unknown as Provider;
 		},
 		[]
 	);
 
 	return (
-		<div className='content'>
+		<div className=''>
 			<LexicalComposer initialConfig={initialConfig}>
-				<RichTextPlugin
-					contentEditable={<ContentEditable className='editor-input' />}
-					placeholder={<div className='editor-placeholder'>Enter some text...</div>}
-					ErrorBoundary={LexicalErrorBoundary}
-				/>
-				<CollaborationPlugin
-					id='lexical/react-rich-collab'
-					providerFactory={providerFactory}
-					shouldBootstrap={true}
-					cursorColor={getRandomCursorColor()}
-					cursorsContainerRef={containerRef}
-				/>
-				<MarkdownShortcutPlugin />
-				<MyOnChangePlugin onChange={(editorState) => { console.log(editorState) }}/>
+				<Toolbar />
+				<div className='editor-container content'>
+					<div className='editor-content-wrapper'>
+						<RichTextPlugin
+							contentEditable={<ContentEditable className='editor-input' />}
+							placeholder={
+								<div className='editor-placeholder'>Enter some text...</div>
+							}
+							ErrorBoundary={LexicalErrorBoundary}
+						/>
+						<CollaborationPlugin
+							id='lexical/react-rich-collab'
+							providerFactory={providerFactory}
+							shouldBootstrap={true}
+							cursorColor={getRandomCursorColor()}
+							cursorsContainerRef={containerRef}
+						/>
+						<MarkdownShortcutPlugin />
+						<MyOnChangePlugin
+							onChange={(editorState) => {
+								console.log(editorState);
+							}}
+						/>
+					</div>
+				</div>
 			</LexicalComposer>
 		</div>
 	);

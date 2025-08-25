@@ -24,21 +24,9 @@ export default function EditorPage() {
 			{' '}
 			{/* 根容器，控制整体布局 */}
 			{/* 1. 顶部导航栏（移除body标签，修复按钮闭合错误） */}
-			<Header/>
+			<Header />
 			{/* 2. 中间编辑区（editor-container，修复结构和样式依赖） */}
-			<div id='editor-container'>
-				{/* 编辑工具栏 */}
-				<Toolbar/>
-				{/* 编辑内容区 */}
-				<div id='editor-content-container'>
-					<div id='editor-content-wrapper'>
-						{/* 将Editor组件嵌入到内容容器中 */}
-						<Editor
-							id={docId}
-						/>
-					</div>
-				</div>
-			</div>
+			<Editor id={docId} />
 		</div>
 	);
 }
