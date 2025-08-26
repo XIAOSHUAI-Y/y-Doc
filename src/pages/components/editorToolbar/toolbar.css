@@ -1,0 +1,134 @@
+#editor-toolbar {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #e9ecef;
+  gap: 8px;
+  position: relative;
+  z-index: 10;
+  overflow: visible;
+  min-width: 1000px; /* 防止工具栏整体被挤压，确保按钮不偏移 */
+  flex-wrap: nowrap; /* 禁止工具栏分组换行，避免按钮位置错乱 */
+}
+
+/* 正文按钮（下拉容器）- 关键：固定宽度+定位基准 */
+#heading-dropdown {
+  position: relative; /* 唯一的定位参考，菜单以此为基准 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between; /* 文字居左、箭头居右，按钮内部布局稳定 */
+  width: 100px; /* 固定按钮宽度，确保菜单能精准对齐 */
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  gap: 6px;
+  z-index: 100;
+  user-select: none;
+  background-color: #fff; /* 按钮默认白色，与工具栏区分，视觉更清晰 */
+  border: 1px solid transparent; /* 预留边框空间，hover时不跳动 */
+}
+
+#heading-dropdown:hover {
+  background-color: #e9ecef;
+  border-color: #ddd; /* hover时加浅灰边框，突出按钮范围 */
+}
+
+/* 下拉菜单 - 强制从按钮正下方出现 */
+#heading-options {
+  position: absolute;
+  top: 100%; /* 菜单顶部 = 按钮底部，无间隙紧贴 */
+  left: 0; /* 菜单左侧 = 按钮左侧，完全对齐 */
+  width: 100%; /* 菜单宽度 = 按钮宽度，视觉统一 */
+  margin-top: 0; /* 取消额外间距，避免与按钮分离 */
+  padding: 4px 0;
+  background-color: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 0 0 4px 4px; /* 顶部圆角取消，与按钮底部圆角衔接 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 阴影仅向下扩散，贴合“从下方弹出”效果 */
+  z-index: 2147483647;
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  transform: none !important; /* 禁止任何偏移变换 */
+  box-sizing: border-box; /* 确保padding不撑大宽度，与按钮宽度严格一致 */
+  overflow: visible;
+}
+
+/* 下拉菜单项 - 保持与按钮宽度对齐 */
+#heading-options > div {
+  padding: 8px 16px;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 14px;
+}
+
+#heading-options > div:hover {
+  background-color: #e9ecef;
+  color: #0d6efd;
+}
+
+/* 工具栏分组 - 确保不干扰按钮定位 */
+#text-format-group,
+#paragraph-format-group,
+#list-format-group,
+#insert-group,
+#view-options {
+  display: flex;
+  align-items: center;
+  overflow: visible;
+  position: static !important; /* 强制静态定位，排除对按钮定位的干扰 */
+}
+
+/* 其他原有样式保持不变（工具栏按钮、分隔线等） */
+.toolbar-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  margin: 0 2px;
+  border: none;
+  border-radius: 4px;
+  background-color: transparent;
+  color: #333;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.toolbar-button:hover {
+  background-color: #e9ecef;
+}
+
+.toolbar-button.active {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 24px;
+  background-color: #e9ecef;
+  margin: 0 4px;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+/* 下拉箭头样式 - 仅视觉优化，不影响定位 */
+#heading-dropdown i.fa-chevron-down {
+  font-size: 12px;
+  color: #666;
+  transition: transform 0.2s ease;
+}
+
+#heading-dropdown.show-dropdown i.fa-chevron-down {
+  transform: rotate(180deg);
+}
+
+/* 删除线格式样式（核心：为 Lexical 自动添加的类名定义删除线） */
+.editor-text-strikethrough {
+  text-decoration: line-through !important; /* 显示删除线 */
+  color: #6c757d !important; /* 可选：删除线文本变浅灰，视觉更符合“删除”语义 */
+}
