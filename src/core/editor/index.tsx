@@ -21,7 +21,7 @@ import { $createHeadingNode } from '@lexical/rich-text';
 import React from 'react';
 import type { Provider, UserState } from '@lexical/yjs';
 import { docTheme } from './theme/theme';
-import Toolbar from '../../pages/components/editorToolbar';
+import Toolbar from '../../pages/components/editorToolbar/index';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { TablePlugin } from '@lexical/react/LexicalTablePlugin';
 
