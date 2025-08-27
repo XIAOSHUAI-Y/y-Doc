@@ -1,9 +1,47 @@
 export const docTheme = {
+  code: 'editor-code',
+  codeHighlight: {
+    tag: 'token-tag',
+    attribute: 'token-attribute',
+    value: 'token-value',
+    selector: 'token-selector',
+    property: 'token-property',
+    'css-value': 'token-css-value',
+    comment: 'token-comment',
+    keyword: 'token-keyword',
+    string: 'token-string',
+    number: 'token-number',
+    function: 'token-function',
+    punctuation: 'token-punctuation'
+  },
   heading: {
-    h1: 'editor-h1'
+    h1: 'editor-h1',
+    h2: 'editor-h2',
+    h3: 'editor-h3',
+    h4: 'editor-h4',
+    h5: 'editor-h5',
   },
 	text: {
 		bold: 'editor-bold',
-    italic: 'editor-italic'
-	}
+    code: 'editor-text-code',
+    italic: 'editor-italic',
+    strikethrough: 'editor-strikethrough',
+    underline: 'editor-underline',
+    hashtag: 'editor-hashtag',
+    overflowed: 'editor-overflowed',
+    underlineStrikethrough: 'editor-underlineStrikethrough',
+	},
+  image: 'editor-image',
+  link: 'editor-link',
+  list: {
+    listitem: 'editor-listitem',
+    nested: {
+      listitem: 'editor-nested-listitem',
+    },
+    ol: 'editor-list-ol',
+    ul: 'editor-list-ul',
+  },
+  paragraph: 'editor-paragraph',
+  placeholder: 'editor-placeholder',
+  quote: 'editor-quote',
 }

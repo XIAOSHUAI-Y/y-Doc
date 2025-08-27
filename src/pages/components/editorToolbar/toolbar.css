@@ -1,71 +1,71 @@
 #editor-toolbar {
-  display: flex;
-  align-items: center;
-  padding: 8px 12px;
-  border-bottom: 1px solid #e9ecef;
-  gap: 8px;
-  position: relative;
-  z-index: 10;
-  overflow: visible;
-  min-width: 1000px; /* 防止工具栏整体被挤压，确保按钮不偏移 */
-  flex-wrap: nowrap; /* 禁止工具栏分组换行，避免按钮位置错乱 */
+	display: flex;
+	align-items: center;
+	padding: 8px 12px;
+	border-bottom: 1px solid #e9ecef;
+	gap: 8px;
+	position: relative;
+	z-index: 10;
+	overflow: visible;
+	min-width: 1000px; /* 防止工具栏整体被挤压，确保按钮不偏移 */
+	flex-wrap: nowrap; /* 禁止工具栏分组换行，避免按钮位置错乱 */
 }
 
 /* 正文按钮（下拉容器）- 关键：固定宽度+定位基准 */
 #heading-dropdown {
-  position: relative; /* 唯一的定位参考，菜单以此为基准 */
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between; /* 文字居左、箭头居右，按钮内部布局稳定 */
-  width: 100px; /* 固定按钮宽度，确保菜单能精准对齐 */
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  gap: 6px;
-  z-index: 100;
-  user-select: none;
-  background-color: #fff; /* 按钮默认白色，与工具栏区分，视觉更清晰 */
-  border: 1px solid transparent; /* 预留边框空间，hover时不跳动 */
+	position: relative; /* 唯一的定位参考，菜单以此为基准 */
+	display: inline-flex;
+	align-items: center;
+	justify-content: space-between; /* 文字居左、箭头居右，按钮内部布局稳定 */
+	width: 100px; /* 固定按钮宽度，确保菜单能精准对齐 */
+	padding: 6px 12px;
+	border-radius: 4px;
+	cursor: pointer;
+	gap: 6px;
+	z-index: 100;
+	user-select: none;
+	background-color: #fff; /* 按钮默认白色，与工具栏区分，视觉更清晰 */
+	border: 1px solid transparent; /* 预留边框空间，hover时不跳动 */
 }
 
 #heading-dropdown:hover {
-  background-color: #e9ecef;
-  border-color: #ddd; /* hover时加浅灰边框，突出按钮范围 */
+	background-color: #e9ecef;
+	border-color: #ddd; /* hover时加浅灰边框，突出按钮范围 */
 }
 
 /* 下拉菜单 - 强制从按钮正下方出现 */
 #heading-options {
-  position: absolute;
-  top: 100%; /* 菜单顶部 = 按钮底部，无间隙紧贴 */
-  left: 0; /* 菜单左侧 = 按钮左侧，完全对齐 */
-  width: 100%; /* 菜单宽度 = 按钮宽度，视觉统一 */
-  margin-top: 0; /* 取消额外间距，避免与按钮分离 */
-  padding: 4px 0;
-  background-color: #fff;
-  border: 1px solid #e9ecef;
-  border-radius: 0 0 4px 4px; /* 顶部圆角取消，与按钮底部圆角衔接 */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 阴影仅向下扩散，贴合“从下方弹出”效果 */
-  z-index: 2147483647;
-  display: block;
-  visibility: visible;
-  opacity: 1;
-  transform: none !important; /* 禁止任何偏移变换 */
-  box-sizing: border-box; /* 确保padding不撑大宽度，与按钮宽度严格一致 */
-  overflow: visible;
+	position: absolute;
+	top: 100%; /* 菜单顶部 = 按钮底部，无间隙紧贴 */
+	left: 0; /* 菜单左侧 = 按钮左侧，完全对齐 */
+	width: 100%; /* 菜单宽度 = 按钮宽度，视觉统一 */
+	margin-top: 0; /* 取消额外间距，避免与按钮分离 */
+	padding: 4px 0;
+	background-color: #fff;
+	border: 1px solid #e9ecef;
+	border-radius: 0 0 4px 4px; /* 顶部圆角取消，与按钮底部圆角衔接 */
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 阴影仅向下扩散，贴合“从下方弹出”效果 */
+	z-index: 2147483647;
+	display: block;
+	visibility: visible;
+	opacity: 1;
+	transform: none !important; /* 禁止任何偏移变换 */
+	box-sizing: border-box; /* 确保padding不撑大宽度，与按钮宽度严格一致 */
+	overflow: visible;
 }
 
 /* 下拉菜单项 - 保持与按钮宽度对齐 */
 #heading-options > div {
-  padding: 8px 16px;
-  color: #333;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  font-size: 14px;
+	padding: 8px 16px;
+	color: #333;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+	font-size: 14px;
 }
 
 #heading-options > div:hover {
-  background-color: #e9ecef;
-  color: #0d6efd;
+	background-color: #e9ecef;
+	color: #0d6efd;
 }
 
 /* 工具栏分组 - 确保不干扰按钮定位 */
@@ -74,61 +74,318 @@
 #list-format-group,
 #insert-group,
 #view-options {
-  display: flex;
-  align-items: center;
-  overflow: visible;
-  position: static !important; /* 强制静态定位，排除对按钮定位的干扰 */
+	display: flex;
+	align-items: center;
+	overflow: visible;
+	position: static !important; /* 强制静态定位，排除对按钮定位的干扰 */
 }
 
 /* 其他原有样式保持不变（工具栏按钮、分隔线等） */
 .toolbar-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 6px 12px;
+	margin: 0 2px;
+	border: none;
+	border-radius: 4px;
+	background-color: transparent;
+	color: #333;
+	cursor: pointer;
+	font-size: 14px;
+	transition: all 0.2s ease;
+}
+
+.toolbar-button:hover {
+	background-color: #e9ecef;
+}
+
+.toolbar-button.active {
+	background-color: #0d6efd;
+	color: white;
+}
+
+.toolbar-divider {
+	width: 1px;
+	height: 24px;
+	background-color: #e9ecef;
+	margin: 0 4px;
+}
+
+.flex-grow {
+	flex-grow: 1;
+}
+
+/* 下拉箭头样式 - 仅视觉优化，不影响定位 */
+#heading-dropdown i.fa-chevron-down {
+	font-size: 12px;
+	color: #666;
+	transition: transform 0.2s ease;
+}
+
+#heading-dropdown.show-dropdown i.fa-chevron-down {
+	transform: rotate(180deg);
+}
+
+/* 确保Lexical文本节点的删除线样式生效 */
+.lx-text-strikethrough {
+	text-decoration: line-through !important;
+	text-decoration-color: inherit !important; /* 继承文本颜色，避免样式断层 */
+}
+
+/* 可选：确保工具栏按钮激活状态样式正常（如果已存在可忽略） */
+.toolbar-button.active {
+	background-color: #e5e7eb; /* 示例：激活时的背景色，根据你的UI调整 */
+	color: #111827;
+}
+
+
+/* 下拉菜单容器基础样式 */
+#heading-dropdown, #table-dropdown {
+  position: relative;
+  display: inline-block;
+  margin: 0 4px;
+}
+
+/* 下拉触发按钮样式 */
+#heading-dropdown > span,
+#table-dropdown > button {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   padding: 6px 12px;
-  margin: 0 2px;
-  border: none;
+  background-color: #f5f5f5;
+  border: 1px solid #e0e0e0;
   border-radius: 4px;
-  background-color: transparent;
-  color: #333;
   cursor: pointer;
   font-size: 14px;
   transition: all 0.2s ease;
 }
 
-.toolbar-button:hover {
-  background-color: #e9ecef;
+#heading-dropdown > span:hover,
+#table-dropdown > button:hover {
+  background-color: #eeeeee;
+  border-color: #d0d0d0;
 }
 
-.toolbar-button.active {
-  background-color: #0d6efd;
-  color: white;
+#heading-dropdown > i {
+  margin-left: 6px;
+  font-size: 12px;
+  opacity: 0.7;
 }
 
-.toolbar-divider {
-  width: 1px;
+/* 下拉菜单内容样式 */
+#heading-options, #table-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 150px;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 2px;
+  z-index: 1000;
+  padding: 4px 0;
+}
+
+/* 标题下拉菜单项样式 */
+#heading-options > div {
+  padding: 6px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#heading-options > div:hover {
+  background-color: #f0f7ff;
+  color: #165dff;
+}
+
+/* 表格大小选择器样式 */
+.table-size-selector {
+  padding: 8px;
+}
+
+.table-row {
+  display: flex;
+}
+
+.table-cell-selector {
+  width: 24px;
   height: 24px;
-  background-color: #e9ecef;
+  border: 1px solid #ddd;
+  background-color: white;
+  transition: all 0.1s ease;
+}
+
+/* 表格选择器交互效果 */
+.table-cell-selector:hover {
+  background-color: #e6f7ff;
+}
+
+/* 选中区域的样式 */
+.table-size-selector:hover .table-cell-selector {
+  background-color: #f5f5f5;
+}
+
+.table-size-selector:hover .table-cell-selector:hover,
+.table-size-selector:hover .table-cell-selector:hover ~ .table-cell-selector,
+.table-size-selector:hover .table-row:hover .table-cell-selector {
+  background-color: #e6f7ff;
+}
+
+/* 激活状态样式 */
+#table-dropdown .toolbar-button.active {
+  background-color: #e6f7ff;
+  border-color: #91d5ff;
+  color: #1890ff;
+}
+
+/* 确保下拉菜单在悬停时保持显示 */
+#heading-dropdown.show-dropdown #heading-options,
+#table-dropdown.show-dropdown #table-options {
+  display: block;
+}
+
+/* 默认隐藏下拉菜单 */
+#heading-options, #table-options {
+  display: none;
+}
+
+/* 避免下拉菜单超出视口 */
+#heading-options, #table-options {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* 代码块按钮及下拉菜单样式 */
+#code-block-dropdown {
+  position: relative;
+  display: inline-block;
   margin: 0 4px;
 }
 
-.flex-grow {
-  flex-grow: 1;
+/* 代码块下拉触发按钮样式 */
+#code-block-dropdown > button {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  background-color: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
 }
 
-/* 下拉箭头样式 - 仅视觉优化，不影响定位 */
-#heading-dropdown i.fa-chevron-down {
+#code-block-dropdown > button:hover {
+  background-color: #eeeeee;
+  border-color: #d0d0d0;
+}
+
+#code-block-dropdown i.code-icon {
+  margin-right: 6px;
+  font-style: normal;
+}
+
+#code-block-dropdown i.fa-chevron-down {
+  margin-left: 6px;
   font-size: 12px;
-  color: #666;
-  transition: transform 0.2s ease;
+  opacity: 0.7;
 }
 
-#heading-dropdown.show-dropdown i.fa-chevron-down {
-  transform: rotate(180deg);
+/* 代码块下拉菜单样式 */
+#code-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 180px;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 2px;
+  z-index: 1000;
+  padding: 8px 0;
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
 }
 
-/* 删除线格式样式（核心：为 Lexical 自动添加的类名定义删除线） */
-.editor-text-strikethrough {
-  text-decoration: line-through !important; /* 显示删除线 */
-  color: #6c757d !important; /* 可选：删除线文本变浅灰，视觉更符合“删除”语义 */
+/* 代码块下拉菜单项样式 */
+#code-options > div {
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+#code-options > div:hover {
+  background-color: #f0f7ff;
+  color: #165dff;
+}
+
+#code-options .language-icon {
+  margin-right: 8px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* 代码块类型分组标题 */
+#code-options .group-title {
+  padding: 4px 16px;
+  color: #999;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: default;
+  background-color: #fafafa;
+}
+
+#code-options .group-title:hover {
+  background-color: #fafafa;
+  color: #999;
+}
+
+/* 分隔线 */
+#code-options .divider {
+  height: 1px;
+  background-color: #eee;
+  margin: 4px 0;
+}
+
+/* 显示下拉菜单 */
+#code-block-dropdown.show-dropdown #code-options {
+  display: block;
+}
+
+/* 激活状态样式 */
+#code-block-dropdown .toolbar-button.active {
+  background-color: #e6f7ff;
+  border-color: #91d5ff;
+  color: #1890ff;
+}
+
+/* 代码块编辑器内样式 */
+.editor-code-block {
+  position: relative;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  padding: 16px;
+  margin: 16px 0;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-x: auto;
+}
+
+/* 代码块语言标签 */
+.editor-code-block .language-label {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+  font-weight: 500;
 }

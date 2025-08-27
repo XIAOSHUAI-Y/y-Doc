@@ -22,6 +22,8 @@ import React from 'react';
 import type { Provider, UserState } from '@lexical/yjs';
 import { docTheme } from './theme/theme';
 import Toolbar from '../../pages/components/editorToolbar';
+import { ListPlugin } from '@lexical/react/LexicalListPlugin';
+import { TablePlugin } from '@lexical/react/LexicalTablePlugin';
 
 function MyOnChangePlugin(props: {
 	onChange: (editorState: EditorState) => void;
@@ -131,6 +133,8 @@ export function Editor({ id }: { id: string }) {
 	return (
 		<div className=''>
 			<LexicalComposer initialConfig={initialConfig}>
+			<ListPlugin />
+			<TablePlugin/>
 				<Toolbar />
 				<div className='editor-container content'>
 					<div className='editor-content-wrapper'>

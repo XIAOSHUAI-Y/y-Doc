@@ -597,3 +597,7 @@ body {
   padding: inherit;
   font-size: inherit;
 }
+
+#underline-button {
+  text-decoration: underline;
+}

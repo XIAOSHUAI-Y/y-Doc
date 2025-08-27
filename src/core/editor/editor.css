@@ -50,3 +50,125 @@
 .editor-bold {
   color: red;
 }
+
+.editor-italic {
+  color: rgb(255, 204, 0)
+}
+
+.editor-strikethrough {
+  text-decoration: line-through !important;
+  color: #6c757d !important; /* 继承文本颜色，避免样式断层 */
+}
+
+.editor-underline {
+   /* 基础下划线样式：与浏览器默认下划线一致，但避免被其他样式覆盖 */
+   text-decoration: underline !important;
+   /* 优化细节：控制下划线颜色、粗细、间距，提升视觉体验 */
+   text-decoration-color:  red !important; /* 继承文本颜色，避免下划线颜色断层 */
+   text-decoration-thickness: 1px !important; /* 下划线粗细（可根据需求调整为1.5px） */
+   text-underline-offset: 2px !important; /* 下划线与文本的间距，避免贴紧文字 */
+   text-decoration-skip-ink: auto !important; /* 穿过字母（如下巴、上沿）时自动断开，提升可读性 */
+}
+
+/* 代码块容器样式 */
+.editor-code {
+  display: block;
+  width: 100%;
+  position: relative;
+  background-color: #1e1e1e; /* 深色背景 */
+  color: #d4d4d4; /* 基础文本颜色 */
+  font-family: 'Fira Code', Menlo, Consolas, Monaco, monospace;
+  padding: 1.5rem 1rem 1rem; /* 顶部留出语言标签空间 */
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 1rem 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 代码语言标签 */
+.editor-code::before {
+  content: attr(data-language); /* 使用data属性显示语言 */
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #858585;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* 语法高亮样式 */
+/* HTML标签 */
+.editor-code .token-tag {
+  color: #569cd6;
+}
+
+/* HTML属性名 */
+.editor-code .token-attribute {
+  color: #9cdcfe;
+}
+
+/* HTML属性值 */
+.editor-code .token-value {
+  color: #ce9178;
+}
+
+/* CSS选择器 */
+.editor-code .token-selector {
+  color: #d7ba7d;
+}
+
+/* CSS属性 */
+.editor-code .token-property {
+  color: #9cdcfe;
+}
+
+/* CSS值 */
+.editor-code .token-css-value {
+  color: #c586c0;
+}
+
+/* 注释 */
+.editor-code .token-comment {
+  color: #6a9955;
+  font-style: italic;
+}
+
+/* 关键字 */
+.editor-code .token-keyword {
+  color: #569cd6;
+}
+
+/* 字符串 */
+.editor-code .token-string {
+  color: #ce9178;
+}
+
+/* 数字 */
+.editor-code .token-number {
+  color: #b5cea8;
+}
+
+/* 函数名 */
+.editor-code .token-function {
+  color: #dcdcaa;
+}
+
+/* 标点符号 */
+.editor-code .token-punctuation {
+  color: #d4d4d4;
+}
+
+/* 代码块中的代码文本 */
+.editor-text-code {
+  background-color: rgba(30, 30, 30, 0.3);
+  color: #d4d4d4;
+  padding: 0.15rem 0.3rem;
+  border-radius: 3px;
+  font-family: 'Fira Code', Menlo, Consolas, Monaco, monospace;
+  font-size: 0.875rem;
+}
