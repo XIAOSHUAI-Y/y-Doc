@@ -240,6 +240,58 @@
   color: #1890ff;
 }
 
+/* 表格操作项样式 */
+#table-options .table-action {
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 14px;
+  border-top: 1px solid #eee;
+  margin-top: 4px;
+}
+
+#table-options .table-action:hover {
+  background-color: #f0f7ff;
+  color: #165dff;
+}
+
+/* 表格选择器的交互反馈优化 */
+.table-cell-selector {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #ddd;
+  background-color: white;
+  transition: all 0.1s ease;
+}
+
+/* 表格选择器的选中状态 */
+.table-cell-selector.selected {
+  background-color: #165dff;
+}
+
+/* 优化表格选择的视觉反馈 */
+.table-size-selector {
+  position: relative;
+  padding: 8px;
+}
+
+/* 当鼠标在表格选择器上移动时，显示选中区域 */
+.table-size-selector:hover .table-cell-selector {
+  background-color: #f5f5f5;
+}
+
+.table-size-selector .table-row:hover .table-cell-selector {
+  background-color: #e6f7ff;
+}
+
+.table-size-selector .table-row .table-cell-selector:hover {
+  background-color: #165dff;
+}
+
+.table-size-selector .table-row .table-cell-selector:hover ~ .table-cell-selector {
+  background-color: #e6f7ff;
+}
+
 /* 确保下拉菜单在悬停时保持显示 */
 #heading-dropdown.show-dropdown #heading-options,
 #table-dropdown.show-dropdown #table-options {

@@ -16,6 +16,7 @@ import {
 	$createTableNode,
 	$createTableRowNode,
 	$createTableCellNode,
+	$isTableNode,
 } from '@lexical/table';
 import { $createCodeNode, $isCodeNode } from '@lexical/code';
 
@@ -123,6 +124,33 @@ export const handleInsertTable = (
 		selection.insertNodes([tableNode]);
 	});
 	setShowTableDropdown(false);
+};
+
+// 处理删除表格
+export const handleRemoveTable = (
+  editor: LexicalEditor,
+  setShowTableDropdown: (show: boolean) => void
+) => {
+  editor.update(() => {
+    const selection = $getSelection();
+    if (!$isRangeSelection(selection)) return;
+
+    const nodes = selection.getNodes();
+    for (const node of nodes) {
+      let currentNode: any = node;
+      // 查找最近的表格节点
+      for (let i = 0; i < 5; i++) {
+        if ($isTableNode(currentNode)) {
+          currentNode.remove();
+          break;
+        }
+        const parent = currentNode.getParent();
+        if (!parent) break;
+        currentNode = parent;
+      }
+    }
+  });
+  setShowTableDropdown(false);
 };
 
 // 处理插入代码块
