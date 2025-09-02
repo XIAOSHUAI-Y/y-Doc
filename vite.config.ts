@@ -14,8 +14,8 @@ export default defineConfig({
 	base: '/y-Doc/',
 	plugins: [react()],
 	build: {
-		outDir:'dist,
-		assetsDir: 'assets'
+		outDir:'dist',
+		assetsDir: 'assets',
 	},
 	server: {
 		proxy: {
