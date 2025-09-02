@@ -36,13 +36,13 @@
 
 import AppRouter from './router';
 
-function App() {
-  return <AppRouter />;
-}
-
-export default App;
-// 临时简化 App.tsx 测试
 // function App() {
-//   return <div>测试页面</div>;
+//   return <AppRouter />;
 // }
+
 // export default App;
+// 临时简化 App.tsx 测试
+function App() {
+  return <div>测试页面</div>;
+}
+export default App;
