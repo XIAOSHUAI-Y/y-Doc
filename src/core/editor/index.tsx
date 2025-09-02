@@ -19,7 +19,7 @@ import {
 } from 'lexical';
 import { $createHeadingNode } from '@lexical/rich-text';
 import React from 'react';
-import type { Provider, UserState } from '@lexical/yjs';
+import type { Provider } from '@lexical/yjs';
 import { docTheme } from './theme/theme';
 import Toolbar from '../../pages/components/editorToolbar/index';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
@@ -38,7 +38,7 @@ function MyOnChangePlugin(props: {
 	return null;
 }
 
-export function Editor({ id }: { id: string }) {
+export function Editor() {
 	const containerRef = useRef<HTMLDivElement>(null);
 
 	function getRandomCursorColor() {
@@ -133,8 +133,8 @@ export function Editor({ id }: { id: string }) {
 	return (
 		<div className=''>
 			<LexicalComposer initialConfig={initialConfig}>
-			<ListPlugin />
-			<TablePlugin/>
+				<ListPlugin />
+				<TablePlugin />
 				<Toolbar />
 				<div className='editor-container content'>
 					<div className='editor-content-wrapper'>

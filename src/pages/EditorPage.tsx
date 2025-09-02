@@ -1,11 +1,11 @@
 // src/pages/EditorPage.tsx
-import { useParams, useNavigate } from 'react-router-dom'; // 替换a标签为useNavigate（React路由规范）
+import { useParams } from 'react-router-dom'; // 替换a标签为useNavigate（React路由规范）
 import { Editor } from '../core/editor';
-import { useUserStore } from '../store/userStore';
+// import { useUserStore } from '../store/userStore';
 import './ed.css';
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import Header from './components/header';
-import Toolbar from './components/editorToolbar';
+// import Toolbar from './components/editorToolbar';
 
 export default function EditorPage() {
 	const { docId } = useParams<{ docId: string }>();
@@ -26,7 +26,7 @@ export default function EditorPage() {
 			{/* 1. 顶部导航栏（移除body标签，修复按钮闭合错误） */}
 			<Header />
 			{/* 2. 中间编辑区（editor-container，修复结构和样式依赖） */}
-			<Editor id={docId} />
+			<Editor />
 		</div>
 	);
 }

@@ -6,7 +6,7 @@ export default function Header() {
   const navigate = useNavigate();
   const [title, setTitle] = useState('未命名文档');
   const { docId } = useParams<{ docId: string }>();
-  const [isSaving, setIsSaving] = useState(false);
+  const [_isSaving, setIsSaving] = useState(false);
   const { username } = useUserStore();
 
   // 加载文档标题（实际项目中应从API获取）
@@ -46,9 +46,7 @@ export default function Header() {
 							id='document-title'
 							type='text'
 							value={title}
-							onChange={(e) => {
-								handleTitleChange
-							}}
+							onChange={handleTitleChange}
 						/>
 						<span id='save-status'>已保存</span>
 					</div>

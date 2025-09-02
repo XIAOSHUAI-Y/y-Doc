@@ -1,7 +1,5 @@
 import type { Provider as YjsProvider } from '@lexical/yjs'; // 使用默认导入
 import { WebsocketProvider } from 'y-websocket';
-import type { WebsocketProvider as WsProviderType } from 'y-websocket'; // 导入类型
-import { Doc } from 'yjs';
 import * as Y from 'yjs'; // 确保导入 Y 命名空间
 
 export interface User {
@@ -18,7 +16,7 @@ export function createWebsocketProvider(
 		doc = new Y.Doc();
 		yjsDocMap.set(docId, doc);
 	} else {
-		doc.load()
+		doc.load();
 	}
 
 	// 直接创建 WebsocketProvider 实例（不急于转为 Provider 类型）

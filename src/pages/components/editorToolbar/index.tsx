@@ -32,16 +32,16 @@ export default function Toolbar() {
   // 代码块相关状态
   const [isInCodeBlock, setIsInCodeBlock] = useState(false);
   const [currentCodeLanguage, setCurrentCodeLanguage] = useState('javascript');
-  const [currentCodeTheme, setCurrentCodeTheme] = useState('light');
-  const [showCodeLanguageDropdown, setShowCodeLanguageDropdown] =
+  const [_currentCodeTheme, setCurrentCodeTheme] = useState('light');
+  const [_showCodeLanguageDropdown, setShowCodeLanguageDropdown] =
     useState(false);
-  const [showCodeThemeDropdown, setShowCodeThemeDropdown] = useState(false);
+  const [_showCodeThemeDropdown, setShowCodeThemeDropdown] = useState(false);
 
   // 下拉菜单Ref
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const codeLanguageRef = useRef<HTMLDivElement | null>(null);
   const codeThemeRef = useRef<HTMLDivElement | null>(null);
-  const tableDropdownRef = useRef<HTMLDivElement | null>(null);
+  // const tableDropdownRef = useRef<HTMLDivElement | null>(null);
 
   // 1. 引入选择状态同步钩子
   useSelectionSync(
