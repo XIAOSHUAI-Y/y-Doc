@@ -4,7 +4,7 @@ import HomePage from './pages/HomePage';
 import EditorPage from './pages/EditorPage';
 
 const router = createBrowserRouter([
-  { path: '/', element: <HomePage /> },
+  { path: '/y-Doc', element: <HomePage /> },
   { path: '/editor/:docId', element: <EditorPage /> },
 ]);
 
