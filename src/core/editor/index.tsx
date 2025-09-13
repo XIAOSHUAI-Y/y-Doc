@@ -25,6 +25,13 @@ import Toolbar from '../../pages/components/editorToolbar/index';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { TablePlugin } from '@lexical/react/LexicalTablePlugin';
 
+const DEV_COLLABORATION_URL = 'localhost:3000';
+const PROD_COLLABORATION_URL = 'doc-backend-rho.vercel.app';
+
+const COLLABORATION_URL = __DEV__
+	? DEV_COLLABORATION_URL
+	: PROD_COLLABORATION_URL;
+
 function MyOnChangePlugin(props: {
 	onChange: (editorState: EditorState) => void;
 }) {
@@ -97,7 +104,7 @@ export function Editor() {
 			}
 
 			const provider = new WebsocketProvider(
-				'ws://localhost:3000/collab',
+				`ws://${COLLABORATION_URL}/collab`,
 				docId,
 				doc,
 				{

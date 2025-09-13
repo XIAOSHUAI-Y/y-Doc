@@ -10,7 +10,7 @@ export default function HomePage() {
 	// 创建新文档
 	const handleCreateDoc = () => {
 		const newDocId = uuidv4(); // 生成随机文档 ID
-		navigate(`/editor/${newDocId}`);
+		navigate(`editor/${newDocId}`);
 	};
 
 	return (

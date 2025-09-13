@@ -7,6 +7,15 @@ export interface User {
 	color: string;
 }
 
+const DEV_COLLABORATION_URL = 'localhost:3000';
+const PROD_COLLABORATION_URL = 'doc-backend-rho.vercel.app';
+
+const COLLABORATION_URL = __DEV__
+	? DEV_COLLABORATION_URL
+	: PROD_COLLABORATION_URL;
+
+console.log('yjy isDev', __DEV__);
+
 export function createWebsocketProvider(
 	docId: string,
 	yjsDocMap: Map<string, Y.Doc>
@@ -21,7 +30,7 @@ export function createWebsocketProvider(
 
 	// 直接创建 WebsocketProvider 实例（不急于转为 Provider 类型）
 	const wsProvider = new WebsocketProvider(
-		`ws://localhost:3000/doc-yjs`,
+		`ws://${COLLABORATION_URL}/doc-yjs`,
 		docId,
 		doc,
 		{
