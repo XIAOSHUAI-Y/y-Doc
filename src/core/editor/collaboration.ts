@@ -30,7 +30,7 @@ export function createWebsocketProvider(
 
 	// 直接创建 WebsocketProvider 实例（不急于转为 Provider 类型）
 	const wsProvider = new WebsocketProvider(
-		`ws://${COLLABORATION_URL}/doc-yjs`,
+		`wss://${COLLABORATION_URL}/doc-yjs`,
 		docId,
 		doc,
 		{

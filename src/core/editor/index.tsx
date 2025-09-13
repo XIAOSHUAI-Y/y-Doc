@@ -104,7 +104,7 @@ export function Editor() {
 			}
 
 			const provider = new WebsocketProvider(
-				`ws://${COLLABORATION_URL}/collab`,
+				`wss://${COLLABORATION_URL}/collab`,
 				docId,
 				doc,
 				{
