@@ -16,7 +16,7 @@ export default defineConfig({
 	server: {
 		proxy: {
 			'/ws': {
-				target: 'ws://localhost:3001', // 代理到 Yjs WebSocket 服务
+				target: 'ws://localhost:3000', // 代理到 Yjs WebSocket 服务
 				ws: true,
 				changeOrigin: true,
 			},
