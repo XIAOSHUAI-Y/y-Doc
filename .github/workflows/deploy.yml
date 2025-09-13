@@ -3,11 +3,11 @@ name: Deploy Vite+React to GitHub Pages
 on:
   # 当推送到main分支时自动部署
   push:
-    branches: ['main']
+    branches: [ 'master' ]
   # 允许手动触发部署
   workflow_dispatch:
 
-# 配置权限
+    # 配置权限
 permissions:
   contents: read
   pages: write
@@ -25,34 +25,34 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v4
 
-      - name: 设置PNPM
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8  # 确保与你本地使用的pnpm版本一致
+    - name: 设置PNPM
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8 # 确保与你本地使用的pnpm版本一致
 
-      - name: 设置Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: 'pnpm'  # 启用pnpm缓存
+    - name: 设置Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'pnpm' # 启用pnpm缓存
 
-      - name: 安装依赖
-        run: pnpm install
+    - name: 安装依赖
+      run: pnpm install
 
-      - name: 构建项目
-        run: pnpm run build  # 确保package.json中有build脚本
+    - name: 构建项目
+      run: pnpm run build # 确保package.json中有build脚本
 
-      - name: 配置GitHub Pages
-        uses: actions/configure-pages@v5  # 升级到最新版本
+    - name: 配置GitHub Pages
+      uses: actions/configure-pages@v5 # 升级到最新版本
 
-      - name: 上传构建产物
-        uses: actions/upload-pages-artifact@v3  # 升级到最新版本
-        with:
-          path: './dist'  # Vite默认构建产物目录
+    - name: 上传构建产物
+      uses: actions/upload-pages-artifact@v3 # 升级到最新版本
+      with:
+        path: './dist' # Vite默认构建产物目录
 
-      - name: 部署到GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4  # 升级到最新版本
+    - name: 部署到GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4 # 升级到最新版本
