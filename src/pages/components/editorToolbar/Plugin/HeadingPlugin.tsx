@@ -20,8 +20,7 @@ export default function HeadingControls({
 	return (
 		<div
 			ref={dropdownRef}
-			id='heading-dropdown'
-			className={showHeadingDropdown ? 'show-dropdown' : ''}
+			className={`heading-dropdown ${showHeadingDropdown ? 'show-dropdown' : ''}`}
 			onMouseEnter={(e) => {
 				e.stopPropagation();
 				setShowHeadingDropdown(true);
@@ -30,7 +29,7 @@ export default function HeadingControls({
 			<span>{currentHeading}</span>
 			<i className='fa fa-chevron-down'></i>
 			{showHeadingDropdown && (
-				<div id='heading-options'>
+				<div className='heading-options'>
 					<div
 						onClick={() =>
 							handleHeadingSelect(editor, 'h1', setShowHeadingDropdown)

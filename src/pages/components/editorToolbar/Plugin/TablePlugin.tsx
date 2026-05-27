@@ -20,21 +20,19 @@ export default function TableControls({
 	return (
 		<div
 			ref={tableDropdownRef}
-			id='table-dropdown'
-			className={showTableDropdown ? 'show-dropdown' : ''}
+			className={`table-dropdown ${showTableDropdown ? 'show-dropdown' : ''}`}
 			onMouseEnter={(e) => {
 				e.stopPropagation();
 				setShowTableDropdown(true);
 			}}
 			onMouseLeave={() => setShowTableDropdown(false)}>
 			<button
-				id='insert-table-button'
-				className={`toolbar-button ${isInTable ? 'active' : ''}`}>
-				<i className='fa fa-table'>表格</i>
+				className={`tbtn ${isInTable ? 'active' : ''}`}>
+				<span>▦ 表格</span>
 			</button>
 
 			{showTableDropdown && (
-				<div id='table-options'>
+				<div className='table-options'>
 					<div className='table-size-selector'>
 						{[...Array(5)].map((_, row) => (
 							<div

@@ -14,11 +14,10 @@ export default function CodeBlockControls({
 }: CodeBlockControlsProps) {
   return (
     <button
-      id='insert-code-button'
-      className={`toolbar-button ${isInCodeBlock ? 'active' : ''}`}
+      className={`tbtn ${isInCodeBlock ? 'active' : ''}`}
       onClick={(e) => handleInsertCodeBlock(editor, currentCodeLanguage, e)}
       onMouseDown={(e) => e.preventDefault()}>
-      <i className='fa fa-code'>代码块</i>
+      <span>{ } 代码</span>
     </button>
   );
 }

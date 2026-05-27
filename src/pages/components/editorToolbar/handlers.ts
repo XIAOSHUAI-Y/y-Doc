@@ -46,19 +46,28 @@ export const handleAlignment = (
 // 处理文本格式切换（加粗）
 export const handleBoldToggle = (editor: LexicalEditor, e: React.MouseEvent) => {
 	e.preventDefault();
-	editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
+	editor.focus();
+	requestAnimationFrame(() => {
+		editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
+	});
 };
 
 // 处理文本格式切换（斜体）
 export const handleItalicToggle = (editor: LexicalEditor, e: React.MouseEvent) => {
 	e.preventDefault();
-	editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
+	editor.focus();
+	requestAnimationFrame(() => {
+		editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
+	});
 };
 
 // 处理文本格式切换（下划线）
 export const handleUnderlineToggle = (editor: LexicalEditor, e: React.MouseEvent) => {
 	e.preventDefault();
-	editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline');
+	editor.focus();
+	requestAnimationFrame(() => {
+		editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline');
+	});
 };
 
 // 处理文本格式切换（删除线）
@@ -67,7 +76,10 @@ export const handleStrikethroughToggle = (
 	e: React.MouseEvent
 ) => {
 	e.preventDefault();
-	editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
+	editor.focus();
+	requestAnimationFrame(() => {
+		editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
+	});
 };
 
 // 处理无序列表切换

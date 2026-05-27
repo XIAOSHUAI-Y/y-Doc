@@ -1,84 +1,121 @@
-/* 在 src/core/editor/editor.css 中修改或添加以下样式 */
-.editor-input {
-  background-color: #ffffff;
-  width: 70%;
-  margin-left: auto;
-  margin-right: auto;
-  min-height: 100vh; /* 使用视口高度确保占满屏幕 */
-  height: 100%;
-  outline: none;
-  padding: 20px;
+/* Editor page layout — matches design-blue-corporate-editor.html */
+.editor-wrap {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 32px 24px;
+  overflow-y: auto;
+  background-color: var(--bg-page);
 }
 
-/* 调整内容容器样式以配合编辑器输入区域 */
-.content {
-  position: relative;
+.editor-sheet {
   width: 100%;
-  min-height: 100vh; /* 确保容器本身占满屏幕高度 */
-  padding: var(--spacing-4) 0; /* 添加上下内边距避免内容贴边 */
-  box-sizing: border-box;
-  background-color: aliceblue;
+  max-width: 860px;
+  min-height: 70vh;
+  background: var(--bg-card);
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  border: 1px solid var(--border-muted);
+  padding: 48px 56px;
+  box-shadow: var(--shadow-card);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* 调整占位符位置以匹配新的编辑器宽度 */
-.editor-placeholder {
-  left: 10%; /* 80%宽度的居中区域，左侧距离10% */
-  width: 80%; /* 与编辑器输入区域保持一致宽度 */
-}
-
-/* 适配标题和段落样式 */
-.lexical-heading-h1 {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: var(--spacing-6);
-  color: var(--color-text-primary);
-}
-
-.lexical-heading-h2 {
-  font-size: 24px;
-  font-weight: 700;
-  margin-top: var(--spacing-8);
-  margin-bottom: var(--spacing-4);
-}
-
-.lexical-paragraph {
-  margin-bottom: var(--spacing-4);
+.editor-input {
+  width: 100%;
+  min-height: 50vh;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.7;
 }
 
+.editor-placeholder {
+  color: var(--text-placeholder);
+  font-style: italic;
+  pointer-events: none;
+  position: absolute;
+  top: 48px;
+  left: 56px;
+}
+
+/* Headings inside editor */
+.editor-sheet h1,
+.editor-input h1,
+.lexical-heading-h1 {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.editor-sheet h2,
+.editor-input h2,
+.lexical-heading-h2 {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.editor-sheet h3,
+.editor-input h3,
+.lexical-heading-h3 {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.editor-sheet p,
+.editor-input p,
+.lexical-paragraph {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  line-height: 1.7;
+}
+
+/* Text formatting */
 .editor-bold {
-  color: red;
+  font-weight: bold;
+  color: var(--accent);
 }
 
 .editor-italic {
-  color: rgb(255, 204, 0)
+  font-style: italic;
+  color: var(--accent);
 }
 
 .editor-strikethrough {
   text-decoration: line-through !important;
-  color: #6c757d !important; /* 继承文本颜色，避免样式断层 */
+  color: var(--text-muted) !important;
 }
 
 .editor-underline {
-   /* 基础下划线样式：与浏览器默认下划线一致，但避免被其他样式覆盖 */
-   text-decoration: underline !important;
-   /* 优化细节：控制下划线颜色、粗细、间距，提升视觉体验 */
-   text-decoration-color:  red !important; /* 继承文本颜色，避免下划线颜色断层 */
-   text-decoration-thickness: 1px !important; /* 下划线粗细（可根据需求调整为1.5px） */
-   text-underline-offset: 2px !important; /* 下划线与文本的间距，避免贴紧文字 */
-   text-decoration-skip-ink: auto !important; /* 穿过字母（如下巴、上沿）时自动断开，提升可读性 */
+  text-decoration: underline !important;
+  text-decoration-color: var(--accent) !important;
+  text-decoration-thickness: 1px !important;
+  text-underline-offset: 2px !important;
+  text-decoration-skip-ink: auto !important;
 }
 
-/* 代码块容器样式 */
+/* Code block */
 .editor-code {
   display: block;
   width: 100%;
   position: relative;
-  background-color: #1e1e1e; /* 深色背景 */
-  color: #d4d4d4; /* 基础文本颜色 */
+  background-color: var(--bg-code);
+  color: var(--text-code);
   font-family: 'Fira Code', Menlo, Consolas, Monaco, monospace;
-  padding: 1.5rem 1rem 1rem; /* 顶部留出语言标签空间 */
+  padding: 1.5rem 1rem 1rem;
   border-radius: 6px;
   overflow-x: auto;
   font-size: 0.875rem;
@@ -87,88 +124,68 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* 代码语言标签 */
 .editor-code::before {
-  content: attr(data-language); /* 使用data属性显示语言 */
+  content: attr(data-language);
   position: absolute;
   top: 0;
   right: 0;
   padding: 0.25rem 0.75rem;
   font-size: 0.75rem;
   font-weight: 500;
-  color: #858585;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-/* 语法高亮样式 */
-/* HTML标签 */
-.editor-code .token-tag {
-  color: #569cd6;
-}
+/* Token colors */
+.editor-code .token-tag { color: #569cd6; }
+.editor-code .token-attribute { color: #9cdcfe; }
+.editor-code .token-value { color: #ce9178; }
+.editor-code .token-selector { color: #d7ba7d; }
+.editor-code .token-property { color: #9cdcfe; }
+.editor-code .token-css-value { color: #c586c0; }
+.editor-code .token-comment { color: #6a9955; font-style: italic; }
+.editor-code .token-keyword { color: #569cd6; }
+.editor-code .token-string { color: #ce9178; }
+.editor-code .token-number { color: #b5cea8; }
+.editor-code .token-function { color: #dcdcaa; }
+.editor-code .token-punctuation { color: var(--text-code); }
 
-/* HTML属性名 */
-.editor-code .token-attribute {
-  color: #9cdcfe;
-}
-
-/* HTML属性值 */
-.editor-code .token-value {
-  color: #ce9178;
-}
-
-/* CSS选择器 */
-.editor-code .token-selector {
-  color: #d7ba7d;
-}
-
-/* CSS属性 */
-.editor-code .token-property {
-  color: #9cdcfe;
-}
-
-/* CSS值 */
-.editor-code .token-css-value {
-  color: #c586c0;
-}
-
-/* 注释 */
-.editor-code .token-comment {
-  color: #6a9955;
-  font-style: italic;
-}
-
-/* 关键字 */
-.editor-code .token-keyword {
-  color: #569cd6;
-}
-
-/* 字符串 */
-.editor-code .token-string {
-  color: #ce9178;
-}
-
-/* 数字 */
-.editor-code .token-number {
-  color: #b5cea8;
-}
-
-/* 函数名 */
-.editor-code .token-function {
-  color: #dcdcaa;
-}
-
-/* 标点符号 */
-.editor-code .token-punctuation {
-  color: #d4d4d4;
-}
-
-/* 代码块中的代码文本 */
 .editor-text-code {
-  background-color: rgba(30, 30, 30, 0.3);
-  color: #d4d4d4;
+  background-color: rgba(37, 99, 235, 0.08);
+  color: var(--text-code);
   padding: 0.15rem 0.3rem;
   border-radius: 3px;
   font-family: 'Fira Code', Menlo, Consolas, Monaco, monospace;
   font-size: 0.875rem;
+}
+
+/* Remote cursors */
+.remote-cursor {
+  position: relative;
+  display: inline-block;
+  width: 2px;
+  height: 18px;
+  background: var(--accent);
+  vertical-align: text-bottom;
+  margin-left: -1px;
+}
+
+/* Selection */
+.editor-input ::selection {
+  background-color: var(--primary-light);
+  color: var(--text-primary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .editor-sheet {
+    padding: 24px 20px;
+    border-radius: 0;
+    border: none;
+  }
+
+  .editor-wrap {
+    padding: 16px 0;
+  }
 }

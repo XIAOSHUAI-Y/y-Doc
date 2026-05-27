@@ -24,46 +24,36 @@ export default function TextFormatControls({
   return (
     <>
       <button
-        id='bold-button'
-        className={`toolbar-button ${isBoldActive ? 'active' : ''}`}
+        type="button"
+        className={`tbtn ${isBoldActive ? 'active' : ''}`}
         onClick={(e) => handleBoldToggle(editor, e)}
         onMouseDown={(e) => e.preventDefault()}>
-        <i className='fa fa-bold'>B</i>
+        B
       </button>
 
       <button
-        id='italic-button'
-        className={`toolbar-button ${isItalicActive ? 'active' : ''}`}
+        type="button"
+        className={`tbtn ${isItalicActive ? 'active' : ''}`}
         onClick={(e) => handleItalicToggle(editor, e)}
         onMouseDown={(e) => e.preventDefault()}>
-        <i className='fa fa-italic'>I</i>
+        I
       </button>
 
       <button
-        id='underline-button'
-        className={`toolbar-button ${isUnderlineActive ? 'active' : ''}`}
+        type="button"
+        className={`tbtn ${isUnderlineActive ? 'active' : ''}`}
         onClick={(e) => handleUnderlineToggle(editor, e)}
         onMouseDown={(e) => e.preventDefault()}>
-        <i className='fa fa-underline'>U</i>
+        U
       </button>
 
       <button
-        id='strikethrough-button'
-        className={`toolbar-button ${isStrikethroughActive ? 'active' : ''}`}
+        type="button"
+        className={`tbtn ${isStrikethroughActive ? 'active' : ''}`}
         onClick={(e) => handleStrikethroughToggle(editor, e)}
         onMouseDown={(e) => e.preventDefault()}>
-        <i className='fa fa-strikethrough'>删除</i>
+        S
       </button>
-
-      <div className='toolbar-divider'></div>
-
-      <button id='text-color-button' className='toolbar-button'>
-        <i className='fa fa-font'>画笔</i>
-      </button>
-      <button id='highlight-button' className='toolbar-button'>
-        <i className='fa fa-highlighter'>A</i>
-      </button>
-      <div className='toolbar-divider'></div>
     </>
   );
 }

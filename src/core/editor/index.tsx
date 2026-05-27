@@ -138,36 +138,34 @@ export function Editor() {
 	);
 
 	return (
-		<div className=''>
-			<LexicalComposer initialConfig={initialConfig}>
-				<ListPlugin />
-				<TablePlugin />
-				<Toolbar />
-				<div className='editor-container content'>
-					<div className='editor-content-wrapper'>
-						<RichTextPlugin
-							contentEditable={<ContentEditable className='editor-input' />}
-							placeholder={
-								<div className='editor-placeholder'>Enter some text...</div>
-							}
-							ErrorBoundary={LexicalErrorBoundary}
-						/>
-						<CollaborationPlugin
-							id='lexical/react-rich-collab'
-							providerFactory={providerFactory}
-							shouldBootstrap={true}
-							cursorColor={getRandomCursorColor()}
-							cursorsContainerRef={containerRef}
-						/>
-						<MarkdownShortcutPlugin />
-						<MyOnChangePlugin
-							onChange={(editorState) => {
-								console.log(editorState);
-							}}
-						/>
-					</div>
+		<LexicalComposer initialConfig={initialConfig}>
+			<ListPlugin />
+			<TablePlugin />
+			<Toolbar />
+			<div className='editor-wrap'>
+				<div className='editor-sheet' ref={containerRef}>
+					<RichTextPlugin
+						contentEditable={<ContentEditable className='editor-input' />}
+						placeholder={
+							<div className='editor-placeholder'>在此开始编辑你的文档……</div>
+						}
+						ErrorBoundary={LexicalErrorBoundary}
+					/>
+					<CollaborationPlugin
+						id='lexical/react-rich-collab'
+						providerFactory={providerFactory}
+						shouldBootstrap={true}
+						cursorColor={getRandomCursorColor()}
+						cursorsContainerRef={containerRef}
+					/>
+					<MarkdownShortcutPlugin />
+					<MyOnChangePlugin
+						onChange={(editorState) => {
+							console.log(editorState);
+						}}
+					/>
 				</div>
-			</LexicalComposer>
-		</div>
+			</div>
+		</LexicalComposer>
 	);
 }

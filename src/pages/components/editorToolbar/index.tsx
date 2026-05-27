@@ -12,24 +12,18 @@ import './toolbar.css'
 
 export default function Toolbar() {
   const [editor] = useLexicalComposerContext();
-  // 标题相关状态
   const [showHeadingDropdown, setShowHeadingDropdown] = useState(false);
   const [currentHeading, setCurrentHeading] = useState('正文');
-  // 文本格式状态
   const [isBoldActive, setIsBoldActive] = useState(false);
   const [isItalicActive, setIsItalicActive] = useState(false);
   const [isUnderlineActive, setIsUnderlineActive] = useState(false);
   const [isStrikethroughActive, setIsStrikethroughActive] = useState(false);
-  // 对齐状态管理
   const [alignment, setAlignment] = useState<
     'left' | 'center' | 'right' | 'justify'
   >('left');
-  // 列表状态管理
   const [listType, setListType] = useState<'bullet' | 'number' | null>(null);
-  // 表格状态管理
   const [isInTable, setIsInTable] = useState(false);
   const [showTableDropdown, setShowTableDropdown] = useState(false);
-  // 代码块相关状态
   const [isInCodeBlock, setIsInCodeBlock] = useState(false);
   const [currentCodeLanguage, setCurrentCodeLanguage] = useState('javascript');
   const [_currentCodeTheme, setCurrentCodeTheme] = useState('light');
@@ -37,13 +31,10 @@ export default function Toolbar() {
     useState(false);
   const [_showCodeThemeDropdown, setShowCodeThemeDropdown] = useState(false);
 
-  // 下拉菜单Ref
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const codeLanguageRef = useRef<HTMLDivElement | null>(null);
   const codeThemeRef = useRef<HTMLDivElement | null>(null);
-  // const tableDropdownRef = useRef<HTMLDivElement | null>(null);
 
-  // 1. 引入选择状态同步钩子
   useSelectionSync(
     editor,
     setCurrentHeading,
@@ -59,7 +50,6 @@ export default function Toolbar() {
     setCurrentCodeTheme
   );
 
-  // 2. 引入外部点击关闭下拉钩子
   useClickOutsideClose(
     dropdownRef,
     codeLanguageRef,
@@ -70,16 +60,17 @@ export default function Toolbar() {
   );
 
   return (
-    <div id='editor-toolbar'>
-      {/* 文本格式组 */}
-      <div id='text-format-group'>
+    <div className='toolbar'>
+      <div className='toolbar-group'>
         <HeadingControls
           editor={editor}
           currentHeading={currentHeading}
           showHeadingDropdown={showHeadingDropdown}
           setShowHeadingDropdown={setShowHeadingDropdown}
         />
-        <div className='toolbar-divider'></div>
+      </div>
+
+      <div className='toolbar-group'>
         <TextFormatControls
           editor={editor}
           isBoldActive={isBoldActive}
@@ -89,20 +80,17 @@ export default function Toolbar() {
         />
       </div>
 
-      {/* 段落格式组 */}
-      <div id='paragraph-format-group'>
+      <div className='toolbar-group'>
         <AlignmentControls editor={editor} alignment={alignment} />
       </div>
 
-      {/* 列表格式组 */}
-      <div id='list-format-group'>
+      <div className='toolbar-group'>
         <ListControls editor={editor} listType={listType} />
       </div>
 
-      {/* 插入内容组 */}
-      <div id='insert-group'>
-        <button id='insert-image-button' className='toolbar-button'>
-          <i className='fa fa-image'>图片</i>
+      <div className='toolbar-group'>
+        <button className='tbtn'>
+          <span>🖼 图片</span>
         </button>
 
         <TableControls
@@ -112,8 +100,8 @@ export default function Toolbar() {
           setShowTableDropdown={setShowTableDropdown}
         />
 
-        <button id='insert-link-button' className='toolbar-button'>
-          <i className='fa fa-link'>链接</i>
+        <button className='tbtn'>
+          <span>🔗 链接</span>
         </button>
 
         <CodeBlockControls

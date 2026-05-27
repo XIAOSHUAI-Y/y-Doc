@@ -83,10 +83,10 @@ export const useSelectionSync = (
 					for (const node of selectedNodes) {
 						if ($isTextNode(node)) {
 							const format = node.getFormat();
-							isBold = (format & 0b1) !== 0;
-							isItalic = (format & 0b10) !== 0;
-							isUnderline = (format & 0b100) !== 0;
-							isStrikethrough = (format & 0b1000) !== 0;
+							isBold ||= (format & 0b1) !== 0;
+							isItalic ||= (format & 0b10) !== 0;
+							isStrikethrough ||= (format & 0b100) !== 0;
+							isUnderline ||= (format & 0b1000) !== 0;
 							if (isBold && isItalic && isUnderline && isStrikethrough) break;
 						}
 					}
