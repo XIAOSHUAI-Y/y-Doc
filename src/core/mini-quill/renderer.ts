@@ -29,7 +29,6 @@ export class Renderer {
       this.highlightCodeBlock(container)
     })
 
-    console.log('[Renderer] DOM children after render:', Array.from(this.container.children).map(el => el.tagName + (el.className ? '.' + el.className : '')))
   }
 
   /**
@@ -89,6 +88,10 @@ export class Renderer {
           blockFormat['code-block'] = inlineAttrs['code-block']
           delete inlineAttrs['code-block']
         }
+        if (inlineAttrs.indent !== undefined) {
+          blockFormat.indent = inlineAttrs.indent
+          delete inlineAttrs.indent
+        }
         if (Object.keys(inlineAttrs).length === 0) inlineAttrs = null
       }
 
@@ -135,6 +138,9 @@ export class Renderer {
           nodes.push(currentList)
         }
         const li = document.createElement('li')
+        if (block.format.indent !== undefined) {
+          li.dataset.indent = String(block.format.indent)
+        }
         this.fillBlock(li, block.nodes)
         currentList.appendChild(li)
       } else if (block.format['code-block']) {

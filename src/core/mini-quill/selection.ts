@@ -146,8 +146,10 @@ export class SelectionManager {
   _getBlock(node) {
     let el = node.parentElement
     while (el && el !== this.container) {
-      // 代码块内的每一行 .code-block 应作为独立 block，以便正确累加换行符
+      // 代码块内的每一行 .code-block 应作为独立 block
       if (el.classList && el.classList.contains('code-block')) return el
+      // 列表项 <li> 应作为独立 block，否则多个 <li> 会被当成同一个 block
+      if (el.tagName === 'LI') return el
       if (el.parentElement === this.container) return el
       el = el.parentElement
     }

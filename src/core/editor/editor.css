@@ -106,6 +106,47 @@
   line-height: 1.7;
 }
 
+/* List indentation — margin-left 让整个 li（含 bullet）一起缩进 */
+.editor-input li[data-indent="1"],
+.editor-sheet li[data-indent="1"] {
+  margin-left: 1.5em;
+}
+
+.editor-input li[data-indent="2"],
+.editor-sheet li[data-indent="2"] {
+  margin-left: 3em;
+}
+
+.editor-input li[data-indent="3"],
+.editor-sheet li[data-indent="3"] {
+  margin-left: 4.5em;
+}
+
+.editor-input li[data-indent="4"],
+.editor-sheet li[data-indent="4"] {
+  margin-left: 6em;
+}
+
+.editor-input li[data-indent="5"],
+.editor-sheet li[data-indent="5"] {
+  margin-left: 7.5em;
+}
+
+.editor-input li[data-indent="6"],
+.editor-sheet li[data-indent="6"] {
+  margin-left: 9em;
+}
+
+.editor-input li[data-indent="7"],
+.editor-sheet li[data-indent="7"] {
+  margin-left: 10.5em;
+}
+
+.editor-input li[data-indent="8"],
+.editor-sheet li[data-indent="8"] {
+  margin-left: 12em;
+}
+
 /* Blockquote */
 .editor-input blockquote,
 .editor-sheet blockquote {

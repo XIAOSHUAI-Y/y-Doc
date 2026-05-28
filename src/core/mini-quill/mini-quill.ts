@@ -192,6 +192,36 @@ export class MiniQuill {
         }
       }
 
+      // 列表内 Backspace 处理：光标在空列表项开头时取消列表
+      if (e.key === 'Backspace') {
+        const selection = window.getSelection()
+        if (selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0)
+          let node = range.startContainer
+          if (node.nodeType === Node.TEXT_NODE) node = node.parentElement
+          const li = node.closest('li')
+          if (li) {
+            this.selection.syncFromDOM()
+            const selRange = this.selection.getRange()
+            const lineRange = this.getLineRange(selRange.index)
+            if (selRange.index === lineRange.index && lineRange.length === 1) {
+              e.preventDefault()
+              this.recordHistory()
+              const formatter = new Formatter(this.delta)
+              formatter.formatBlock(lineRange.index, lineRange.length, { list: null })
+              this.delta = formatter.delta
+              this._removeIndent(lineRange.index, lineRange.length)
+              this.selection.index = lineRange.index
+              this.selection.length = 0
+              this.recordHistory()
+              this.render()
+              this.emit('text-change')
+              return
+            }
+          }
+        }
+      }
+
       // 代码块内 Enter 处理：连续两个空行退出代码块（官方 Quill 行为）
       if (e.key === 'Enter') {
         const selection = window.getSelection()
@@ -216,7 +246,6 @@ export class MiniQuill {
             if (lineRange.length === 1 && this._lineHasCodeBlock(lineRange.index)) {
               if (lineRange.index > 0) {
                 const prevLineRange = this.getLineRange(lineRange.index - 1)
-                console.log('[Enter] exit check:', { selIndex: selRange.index, lineRange, prevLineRange, delta: JSON.parse(JSON.stringify(this.delta.ops)) })
                 if (prevLineRange.length === 1 && this._lineHasCodeBlock(prevLineRange.index)) {
                   this.recordHistory()
                   const formatter = new Formatter(this.delta)
@@ -227,7 +256,6 @@ export class MiniQuill {
                   this.selection.length = 0
                   this.recordHistory()
                   this.render()
-                  console.log('[Enter] exited code block, new delta:', JSON.parse(JSON.stringify(this.delta.ops)))
                   this.emit('text-change')
                   return
                 }
@@ -279,6 +307,143 @@ export class MiniQuill {
             this.recordHistory()
             this.render()
             this.emit('text-change')
+          }
+        }
+      }
+
+      // 列表内 Enter 处理：空列表项退出列表，非空则分裂并继承格式
+      if (e.key === 'Enter') {
+        const selection = window.getSelection()
+        if (selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0)
+          let node = range.startContainer
+          if (node.nodeType === Node.TEXT_NODE) node = node.parentElement
+          const li = node.closest('li')
+          if (li) {
+            e.preventDefault()
+            this.selection.syncFromDOM()
+            const selRange = this.selection.getRange()
+            const lineRange = this.getLineRange(selRange.index)
+
+            // 空列表项 → 退出列表（移除 list 和 indent）
+            if (lineRange.length === 1) {
+              this.recordHistory()
+              const formatter = new Formatter(this.delta)
+              formatter.formatBlock(lineRange.index, lineRange.length, { list: null })
+              this.delta = formatter.delta
+              this._removeIndent(lineRange.index, lineRange.length)
+              this.selection.index = lineRange.index
+              this.selection.length = 0
+              this.recordHistory()
+              this.render()
+              this.emit('text-change')
+              return
+            }
+
+            // 非空列表项 → 分裂当前行，新行继承 list + indent
+            this.recordHistory()
+            const lineFormat = this._getLineFormat(selRange.index)
+            const ops = []
+            let currentIndex = 0
+            let inserted = false
+            for (const op of this.delta.ops) {
+              const opLength = typeof op.insert === 'string'
+                ? op.insert.length
+                : (op.insert ? 1 : (op.retain || op.delete || 0))
+              if (inserted || currentIndex + opLength <= selRange.index) {
+                ops.push({ ...op })
+              } else if (typeof op.insert === 'string') {
+                const splitAt = selRange.index - currentIndex
+                if (splitAt > 0) {
+                  ops.push({
+                    insert: op.insert.slice(0, splitAt),
+                    ...(op.attributes ? { attributes: { ...op.attributes } } : {})
+                  })
+                }
+                const newLineAttrs = {}
+                if (lineFormat.list) newLineAttrs.list = lineFormat.list
+                if (lineFormat.indent) newLineAttrs.indent = lineFormat.indent
+                ops.push({ insert: '\n', ...(Object.keys(newLineAttrs).length > 0 ? { attributes: newLineAttrs } : {}) })
+                if (splitAt < op.insert.length) {
+                  ops.push({
+                    insert: op.insert.slice(splitAt),
+                    ...(op.attributes ? { attributes: { ...op.attributes } } : {})
+                  })
+                }
+                inserted = true
+              } else {
+                ops.push({ ...op })
+                if (currentIndex === selRange.index) {
+                  const newLineAttrs = {}
+                  if (lineFormat.list) newLineAttrs.list = lineFormat.list
+                  if (lineFormat.indent) newLineAttrs.indent = lineFormat.indent
+                  ops.push({ insert: '\n', ...(Object.keys(newLineAttrs).length > 0 ? { attributes: newLineAttrs } : {}) })
+                  inserted = true
+                }
+              }
+              currentIndex += opLength
+            }
+            if (!inserted) {
+              const newLineAttrs = {}
+              if (lineFormat.list) newLineAttrs.list = lineFormat.list
+              if (lineFormat.indent) newLineAttrs.indent = lineFormat.indent
+              ops.push({ insert: '\n', ...(Object.keys(newLineAttrs).length > 0 ? { attributes: newLineAttrs } : {}) })
+            }
+            this.delta = new Delta(ops)
+            this.selection.index = selRange.index + 1
+            this.selection.length = 0
+            this.recordHistory()
+            this.render()
+            this.emit('text-change')
+          }
+        }
+      }
+
+      // 列表内 Tab 处理：增加/减少缩进
+      if (e.key === 'Tab') {
+        const selection = window.getSelection()
+        if (selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0)
+          let node = range.startContainer
+          if (node.nodeType === Node.TEXT_NODE) node = node.parentElement
+          const li = node.closest('li')
+          if (li) {
+            e.preventDefault()
+            this.selection.syncFromDOM()
+            const selRange = this.selection.getRange()
+            const lineRange = this.getLineRange(selRange.index)
+            const lineFormat = this._getLineFormat(selRange.index)
+
+            if (e.shiftKey) {
+              // Shift+Tab：减少缩进
+              if (lineFormat.indent && lineFormat.indent > 0) {
+                this.recordHistory()
+                this._setIndent(lineRange.index, lineRange.length, lineFormat.indent - 1)
+                this.recordHistory()
+                this.render()
+                this.emit('text-change')
+              } else if (lineFormat.list) {
+                // 缩进为 0 时取消列表
+                this.recordHistory()
+                const formatter = new Formatter(this.delta)
+                formatter.formatBlock(lineRange.index, lineRange.length, { list: null })
+                this.delta = formatter.delta
+                this._removeIndent(lineRange.index, lineRange.length)
+                this.selection.index = selRange.index
+                this.selection.length = 0
+                this.recordHistory()
+                this.render()
+                this.emit('text-change')
+              }
+            } else {
+              // Tab：增加缩进（max 8）
+              const newIndent = Math.min((lineFormat.indent || 0) + 1, 8)
+              this.recordHistory()
+              this._setIndent(lineRange.index, lineRange.length, newIndent)
+              this.recordHistory()
+              this.render()
+              this.emit('text-change')
+            }
           }
         }
       }
@@ -608,6 +773,124 @@ export class MiniQuill {
   }
 
   /**
+   * 获取指定位置的行格式（块级属性）
+   * @param {number} index
+   * @returns {Object}
+   */
+  _getLineFormat(index) {
+    const lineRange = this.getLineRange(index)
+    const endPos = lineRange.index + lineRange.length - 1
+    let currentIndex = 0
+    for (const op of this.delta.ops) {
+      const opLength = typeof op.insert === 'string'
+        ? op.insert.length
+        : (op.insert ? 1 : (op.retain || op.delete || 0))
+      if (typeof op.insert === 'string') {
+        for (let i = 0; i < op.insert.length; i++) {
+          if (op.insert[i] === '\n' && currentIndex + i === endPos) {
+            return op.attributes || {}
+          }
+        }
+      }
+      currentIndex += opLength
+    }
+    return {}
+  }
+
+  /**
+   * 为指定行设置 indent
+   * @param {number} index
+   * @param {number} length
+   * @param {number} indent
+   */
+  _setIndent(index, length, indent) {
+    const newOps = []
+    let currentIndex = 0
+
+    for (const op of this.delta.ops) {
+      const opLength = typeof op.insert === 'string'
+        ? op.insert.length
+        : (op.insert ? 1 : (op.retain || op.delete || 0))
+
+      if (typeof op.insert === 'string' && op.insert.includes('\n')) {
+        let textStart = 0
+        for (let i = 0; i < op.insert.length; i++) {
+          if (op.insert[i] === '\n') {
+            if (textStart < i) {
+              newOps.push({
+                insert: op.insert.slice(textStart, i),
+                ...(op.attributes ? { attributes: { ...op.attributes } } : {})
+              })
+            }
+
+            const pos = currentIndex + i
+            const overlapStart = Math.max(pos, index)
+            const overlapEnd = Math.min(pos + 1, index + length)
+
+            if (overlapEnd > overlapStart) {
+              const attrs = op.attributes ? { ...op.attributes } : {}
+              if (indent > 0) {
+                attrs.indent = indent
+              } else {
+                delete attrs.indent
+              }
+              if (Object.keys(attrs).length > 0) {
+                newOps.push({ insert: '\n', attributes: attrs })
+              } else {
+                newOps.push({ insert: '\n' })
+              }
+            } else {
+              newOps.push({
+                insert: '\n',
+                ...(op.attributes ? { attributes: { ...op.attributes } } : {})
+              })
+            }
+            textStart = i + 1
+          }
+        }
+        if (textStart < op.insert.length) {
+          newOps.push({
+            insert: op.insert.slice(textStart),
+            ...(op.attributes ? { attributes: { ...op.attributes } } : {})
+          })
+        }
+      } else if (op.insert === '\n') {
+        const overlapStart = Math.max(currentIndex, index)
+        const overlapEnd = Math.min(currentIndex + opLength, index + length)
+        if (overlapEnd > overlapStart) {
+          const attrs = op.attributes ? { ...op.attributes } : {}
+          if (indent > 0) {
+            attrs.indent = indent
+          } else {
+            delete attrs.indent
+          }
+          if (Object.keys(attrs).length > 0) {
+            newOps.push({ insert: '\n', attributes: attrs })
+          } else {
+            newOps.push({ insert: '\n' })
+          }
+        } else {
+          newOps.push({ ...op })
+        }
+      } else {
+        newOps.push({ ...op })
+      }
+      currentIndex += opLength
+    }
+
+    this.delta = new Delta(newOps)
+  }
+
+  /**
+   * 移除指定行的 indent
+   * @param {number} index
+   * @param {number} length
+   */
+  _removeIndent(index, length) {
+    this._setIndent(index, length, 0)
+  }
+
+  /**
    * 删除 Delta 中指定范围的内容
    * @param {number} index
    * @param {number} length
@@ -732,6 +1015,28 @@ export class MiniQuill {
       } else {
         return // 内联格式需要选区
       }
+    }
+
+    // 块级格式扩展到覆盖所有涉及的整行（避免选区未对齐到行尾导致漏行）
+    if (isBlockFormat) {
+      const startLine = this.getLineRange(range.index)
+      const endLine = this.getLineRange(range.index + range.length)
+      range = {
+        index: startLine.index,
+        length: (endLine.index + endLine.length) - startLine.index
+      }
+      this.selection.setSelection(range.index, range.length)
+    }
+
+    // 防御性截断：防止 range 超出 delta 实际长度
+    const totalLength = this.delta.ops.reduce((sum, op) => {
+      const len = typeof op.insert === 'string'
+        ? op.insert.length
+        : (op.insert ? 1 : (op.retain || op.delete || 0))
+      return sum + len
+    }, 0)
+    if (range.index + range.length > totalLength) {
+      range.length = Math.max(0, totalLength - range.index)
     }
 
     this.recordHistory()
@@ -909,6 +1214,9 @@ export class MiniQuill {
           if (parent.tagName === 'UL') format.list = 'bullet'
           else if (parent.tagName === 'OL') format.list = 'ordered'
         }
+        if (el.dataset.indent) {
+          format.indent = parseInt(el.dataset.indent, 10)
+        }
       }
       return format
     }
@@ -973,7 +1281,18 @@ export class MiniQuill {
       }
     }
 
-    const blocks = Array.from(this.container.children)
+    // 收集所有顶级块级节点（元素节点 + 需要包裹的直接文本节点）
+    // 浏览器编辑 contenteditable 时，偶尔会把文本节点直接挂在容器下而不包在 div 里
+    const blocks = []
+    for (const node of this.container.childNodes) {
+      if (node.nodeType === Node.ELEMENT_NODE) {
+        blocks.push(node)
+      } else if (node.nodeType === Node.TEXT_NODE && node.textContent && node.textContent.trim()) {
+        const wrap = document.createElement('div')
+        wrap.textContent = node.textContent
+        blocks.push(wrap)
+      }
+    }
 
     if (blocks.length === 0) {
       const content = this.container.textContent || ''
@@ -1053,7 +1372,6 @@ export class MiniQuill {
 
     // 恢复选区，避免光标丢失
     this.selection.setSelection(range.index, range.length)
-    console.log('[render] done. DOM children count:', this.container.children.length, 'HTML:', this.container.innerHTML.slice(0, 500))
   }
 
   /**

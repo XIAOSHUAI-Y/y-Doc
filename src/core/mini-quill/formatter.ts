@@ -200,6 +200,7 @@ export class Formatter {
                 delete textAttrs.list
                 delete textAttrs.blockquote
                 delete textAttrs['code-block']
+                delete textAttrs.indent
                 if (Object.keys(textAttrs).length === 0) textAttrs = undefined
               }
               newOps.push({
@@ -239,6 +240,7 @@ export class Formatter {
             delete textAttrs.list
             delete textAttrs.blockquote
             delete textAttrs['code-block']
+            delete textAttrs.indent
             if (Object.keys(textAttrs).length === 0) textAttrs = undefined
           }
           newOps.push({
