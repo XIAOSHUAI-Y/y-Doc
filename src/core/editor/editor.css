@@ -106,6 +106,121 @@
   line-height: 1.7;
 }
 
+/* Ordered list multi-level numbering via CSS counters */
+.editor-input ol.ordered-list,
+.editor-sheet ol.ordered-list {
+  list-style-type: none;
+  counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+}
+
+.editor-input ol.ordered-list > li,
+.editor-sheet ol.ordered-list > li {
+  counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+  counter-increment: list-0;
+}
+
+.editor-input ol.ordered-list > li::before,
+.editor-sheet ol.ordered-list > li::before {
+  content: counter(list-0, decimal) '. ';
+  margin-right: 0.3em;
+}
+
+/* indent 1 -> lower-alpha */
+.editor-input ol.ordered-list > li[data-indent="1"],
+.editor-sheet ol.ordered-list > li[data-indent="1"] {
+  counter-increment: list-1;
+  counter-reset: list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+}
+
+.editor-input ol.ordered-list > li[data-indent="1"]::before,
+.editor-sheet ol.ordered-list > li[data-indent="1"]::before {
+  content: counter(list-1, lower-alpha) '. ';
+}
+
+/* indent 2 -> lower-roman */
+.editor-input ol.ordered-list > li[data-indent="2"],
+.editor-sheet ol.ordered-list > li[data-indent="2"] {
+  counter-increment: list-2;
+  counter-reset: list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+}
+
+.editor-input ol.ordered-list > li[data-indent="2"]::before,
+.editor-sheet ol.ordered-list > li[data-indent="2"]::before {
+  content: counter(list-2, lower-roman) '. ';
+}
+
+/* indent 3 -> decimal */
+.editor-input ol.ordered-list > li[data-indent="3"],
+.editor-sheet ol.ordered-list > li[data-indent="3"] {
+  counter-increment: list-3;
+  counter-reset: list-4 list-5 list-6 list-7 list-8 list-9;
+}
+
+.editor-input ol.ordered-list > li[data-indent="3"]::before,
+.editor-sheet ol.ordered-list > li[data-indent="3"]::before {
+  content: counter(list-3, decimal) '. ';
+}
+
+/* indent 4 -> lower-alpha */
+.editor-input ol.ordered-list > li[data-indent="4"],
+.editor-sheet ol.ordered-list > li[data-indent="4"] {
+  counter-increment: list-4;
+  counter-reset: list-5 list-6 list-7 list-8 list-9;
+}
+
+.editor-input ol.ordered-list > li[data-indent="4"]::before,
+.editor-sheet ol.ordered-list > li[data-indent="4"]::before {
+  content: counter(list-4, lower-alpha) '. ';
+}
+
+/* indent 5 -> lower-roman */
+.editor-input ol.ordered-list > li[data-indent="5"],
+.editor-sheet ol.ordered-list > li[data-indent="5"] {
+  counter-increment: list-5;
+  counter-reset: list-6 list-7 list-8 list-9;
+}
+
+.editor-input ol.ordered-list > li[data-indent="5"]::before,
+.editor-sheet ol.ordered-list > li[data-indent="5"]::before {
+  content: counter(list-5, lower-roman) '. ';
+}
+
+/* indent 6 -> decimal */
+.editor-input ol.ordered-list > li[data-indent="6"],
+.editor-sheet ol.ordered-list > li[data-indent="6"] {
+  counter-increment: list-6;
+  counter-reset: list-7 list-8 list-9;
+}
+
+.editor-input ol.ordered-list > li[data-indent="6"]::before,
+.editor-sheet ol.ordered-list > li[data-indent="6"]::before {
+  content: counter(list-6, decimal) '. ';
+}
+
+/* indent 7 -> lower-alpha */
+.editor-input ol.ordered-list > li[data-indent="7"],
+.editor-sheet ol.ordered-list > li[data-indent="7"] {
+  counter-increment: list-7;
+  counter-reset: list-8 list-9;
+}
+
+.editor-input ol.ordered-list > li[data-indent="7"]::before,
+.editor-sheet ol.ordered-list > li[data-indent="7"]::before {
+  content: counter(list-7, lower-alpha) '. ';
+}
+
+/* indent 8 -> lower-roman */
+.editor-input ol.ordered-list > li[data-indent="8"],
+.editor-sheet ol.ordered-list > li[data-indent="8"] {
+  counter-increment: list-8;
+  counter-reset: list-9;
+}
+
+.editor-input ol.ordered-list > li[data-indent="8"]::before,
+.editor-sheet ol.ordered-list > li[data-indent="8"]::before {
+  content: counter(list-8, lower-roman) '. ';
+}
+
 /* List indentation — margin-left 让整个 li（含 bullet）一起缩进 */
 .editor-input li[data-indent="1"],
 .editor-sheet li[data-indent="1"] {

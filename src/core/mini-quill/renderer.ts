@@ -135,6 +135,9 @@ export class Renderer {
         if (!currentList || currentList.dataset.listType !== block.format.list) {
           currentList = document.createElement(block.format.list === 'ordered' ? 'ol' : 'ul')
           currentList.dataset.listType = block.format.list
+          if (block.format.list === 'ordered') {
+            currentList.classList.add('ordered-list')
+          }
           nodes.push(currentList)
         }
         const li = document.createElement('li')
