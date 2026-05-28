@@ -26,7 +26,7 @@ export default function EditorPage() {
 			{/* 1. 顶部导航栏（移除body标签，修复按钮闭合错误） */}
 			<Header />
 			{/* 2. 中间编辑区（editor-container，修复结构和样式依赖） */}
-			<Editor />
+			<Editor docId={docId} />
 		</div>
 	);
 }
