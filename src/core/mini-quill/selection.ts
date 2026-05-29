@@ -150,6 +150,8 @@ export class SelectionManager {
       if (el.classList && el.classList.contains('code-block')) return el
       // 列表项 <li> 应作为独立 block，否则多个 <li> 会被当成同一个 block
       if (el.tagName === 'LI') return el
+      // blockquote 内的每个 <div> 行应作为独立 block，否则换行符索引丢失
+      if (el.tagName === 'DIV' && el.parentElement && el.parentElement.tagName === 'BLOCKQUOTE') return el
       if (el.parentElement === this.container) return el
       el = el.parentElement
     }

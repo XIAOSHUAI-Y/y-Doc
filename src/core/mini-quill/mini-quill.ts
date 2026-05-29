@@ -222,6 +222,35 @@ export class MiniQuill {
         }
       }
 
+      // 引用块内 Backspace 处理：光标在空引用行开头时取消引用
+      if (e.key === 'Backspace') {
+        const selection = window.getSelection()
+        if (selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0)
+          let node = range.startContainer
+          if (node.nodeType === Node.TEXT_NODE) node = node.parentElement
+          const blockquote = node.closest('blockquote')
+          if (blockquote) {
+            this.selection.syncFromDOM()
+            const selRange = this.selection.getRange()
+            const lineRange = this.getLineRange(selRange.index)
+            if (selRange.index === lineRange.index && lineRange.length === 1) {
+              e.preventDefault()
+              this.recordHistory()
+              const formatter = new Formatter(this.delta)
+              formatter.formatBlock(lineRange.index, lineRange.length, { blockquote: null })
+              this.delta = formatter.delta
+              this.selection.index = lineRange.index
+              this.selection.length = 0
+              this.recordHistory()
+              this.render()
+              this.emit('text-change')
+              return
+            }
+          }
+        }
+      }
+
       // 代码块内 Enter 处理：连续两个空行退出代码块（官方 Quill 行为）
       if (e.key === 'Enter') {
         const selection = window.getSelection()
@@ -395,6 +424,84 @@ export class MiniQuill {
             this.recordHistory()
             this.render()
             this.emit('text-change')
+          }
+        }
+      }
+
+      // 引用块内 Enter 处理：非空行保持引用，空行退出引用
+      if (e.key === 'Enter') {
+        const selection = window.getSelection()
+        if (selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0)
+          let node = range.startContainer
+          if (node.nodeType === Node.TEXT_NODE) node = node.parentElement
+          const blockquote = node.closest('blockquote')
+          if (blockquote) {
+            e.preventDefault()
+            this.selection.syncFromDOM()
+            const selRange = this.selection.getRange()
+            const lineRange = this.getLineRange(selRange.index)
+
+            // 空引用行 → 退出引用块
+            if (lineRange.length === 1) {
+              this.recordHistory()
+              const formatter = new Formatter(this.delta)
+              formatter.formatBlock(lineRange.index, lineRange.length, { blockquote: null })
+              this.delta = formatter.delta
+              this.selection.index = lineRange.index
+              this.selection.length = 0
+              this.recordHistory()
+              this.render()
+              this.emit('text-change')
+              return
+            }
+
+            // 非空引用行 → 分裂当前行，新行保持引用
+            this.recordHistory()
+            const ops = []
+            let currentIndex = 0
+            let inserted = false
+            for (const op of this.delta.ops) {
+              const opLength = typeof op.insert === 'string'
+                ? op.insert.length
+                : (op.insert ? 1 : (op.retain || op.delete || 0))
+              if (inserted || currentIndex + opLength <= selRange.index) {
+                ops.push({ ...op })
+              } else if (typeof op.insert === 'string') {
+                const splitAt = selRange.index - currentIndex
+                if (splitAt > 0) {
+                  ops.push({
+                    insert: op.insert.slice(0, splitAt),
+                    ...(op.attributes ? { attributes: { ...op.attributes } } : {})
+                  })
+                }
+                ops.push({ insert: '\n', attributes: { blockquote: true } })
+                if (splitAt < op.insert.length) {
+                  ops.push({
+                    insert: op.insert.slice(splitAt),
+                    ...(op.attributes ? { attributes: { ...op.attributes } } : {})
+                  })
+                }
+                inserted = true
+              } else {
+                ops.push({ ...op })
+                if (currentIndex === selRange.index) {
+                  ops.push({ insert: '\n', attributes: { blockquote: true } })
+                  inserted = true
+                }
+              }
+              currentIndex += opLength
+            }
+            if (!inserted) {
+              ops.push({ insert: '\n', attributes: { blockquote: true } })
+            }
+            this.delta = new Delta(ops)
+            this.selection.index = selRange.index + 1
+            this.selection.length = 0
+            this.recordHistory()
+            this.render()
+            this.emit('text-change')
+            return
           }
         }
       }
@@ -1221,9 +1328,9 @@ export class MiniQuill {
       return format
     }
 
-    /** 处理单个 block */
-    const processBlock = (block) => {
-      const blockFormat = getBlockFormat(block)
+    /** 处理单个 block（forcedFormat 用于 blockquote 内子元素） */
+    const processBlock = (block, forcedFormat = null) => {
+      const blockFormat = forcedFormat ? { ...forcedFormat } : getBlockFormat(block)
       const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT)
       let node
       const pending = []
@@ -1317,6 +1424,8 @@ export class MiniQuill {
             ops.push({ insert: '\n', attributes: { 'code-block': lang } })
           }
         }
+      } else if (block.tagName === 'BLOCKQUOTE') {
+        Array.from(block.children).forEach((child) => processBlock(child, { blockquote: true }))
       } else {
         processBlock(block)
       }

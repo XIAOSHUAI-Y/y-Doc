@@ -245,6 +245,23 @@ export class Renderer {
 
         nodes.push(wrapper)
         i = j - 1
+      } else if (block.format.blockquote) {
+        currentList = null
+        const quoteBlocks = []
+        let j = i
+        while (j < blocksData.length && blocksData[j].format.blockquote) {
+          quoteBlocks.push(blocksData[j])
+          j++
+        }
+
+        const quote = document.createElement('blockquote')
+        for (const qb of quoteBlocks) {
+          const line = document.createElement('div')
+          this.fillBlock(line, qb.nodes)
+          quote.appendChild(line)
+        }
+        nodes.push(quote)
+        i = j - 1
       } else {
         currentList = null
         const el = BlockBlot.create(block.format)
