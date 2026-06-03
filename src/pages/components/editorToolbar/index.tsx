@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, type RefObject } from 'react'
+import { useState, useEffect, type RefObject } from 'react'
 import './toolbar.css'
 import type { MiniQuillEditorRef } from '../../../core/editor/MiniQuillEditor'
 
