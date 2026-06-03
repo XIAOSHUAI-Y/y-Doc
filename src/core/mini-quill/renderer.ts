@@ -379,12 +379,4 @@ export class Renderer {
     return lines
   }
 
-  /**
-   * 比较两个 DOM 节点是否等效
-   */
-  nodesEqual(a, b) {
-    if (a.tagName !== b.tagName) return false
-    if (a.innerHTML !== b.innerHTML) return false
-    return true
-  }
 }

@@ -1,4 +1,6 @@
 // @ts-nocheck
+import { getOpLength } from './utils'
+
 /**
  * Formatter - 格式操作器
  *
@@ -45,7 +47,7 @@ export class Formatter {
       let currentIndex = 0
 
       for (const op of this.delta.ops) {
-        const opLength = this.getOpLength(op)
+        const opLength = getOpLength(op)
         const overlapStart = Math.max(currentIndex, index)
         const overlapEnd = Math.min(currentIndex + opLength, index + length)
 
@@ -68,7 +70,7 @@ export class Formatter {
     let currentIndex = 0
 
     for (const op of this.delta.ops) {
-      const opLength = this.getOpLength(op)
+      const opLength = getOpLength(op)
 
       // 换行符不应用 inline 格式，直接透传
       if (op.insert === '\n') {
@@ -157,7 +159,7 @@ export class Formatter {
     let currentIndex = 0
 
     for (const op of this.delta.ops) {
-      const opLength = this.getOpLength(op)
+      const opLength = getOpLength(op)
       if (typeof op.insert === 'string') {
         for (let i = 0; i < op.insert.length; i++) {
           if (op.insert[i] !== '\n') continue
@@ -186,7 +188,7 @@ export class Formatter {
     currentIndex = 0
 
     for (const op of this.delta.ops) {
-      const opLength = this.getOpLength(op)
+      const opLength = getOpLength(op)
 
       if (typeof op.insert === 'string' && op.insert.includes('\n')) {
         let textStart = 0
@@ -277,27 +279,6 @@ export class Formatter {
     }
 
     this.delta.ops = newOps
-  }
-
-  /**
-   * 获取操作的长度
-   *
-   * Delta 操作的长度取决于其类型：
-   * - insert: 字符串长度
-   * - retain: 保留的字符数
-   * - delete: 删除的字符数
-   *
-   * @param {import('../types.d.ts').Op} op - Delta 操作对象
-   * @returns {number} 操作对应的文本长度
-   */
-  getOpLength(op) {
-    if (typeof op.insert === 'string') {
-      return op.insert.length
-    }
-    if (op.insert) return 1 // embed has length 1
-    if (op.retain) return op.retain
-    if (op.delete) return op.delete
-    return 0
   }
 
   /**

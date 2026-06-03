@@ -5,3 +5,7 @@ export { Renderer } from './renderer';
 export { SelectionManager } from './selection';
 export { Formatter } from './formatter';
 export { MiniQuill } from './mini-quill';
+export { getOpLength } from './utils';
+export { HistoryManager } from './history';
+export { KeyboardHandler } from './keyboard';
+export { PasteHandler } from './paste';
