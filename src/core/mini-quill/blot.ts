@@ -8,10 +8,19 @@ export class TextBlot {
   /**
    * 创建纯文本节点
    * @param {string} text
-   * @returns {Text}
+   * @returns {Node}
    */
   static create(text) {
-    return document.createTextNode(text)
+    if (!text || !text.includes('\n')) {
+      return document.createTextNode(text || '')
+    }
+    const wrapper = document.createElement('span')
+    const parts = text.split('\n')
+    parts.forEach((part, i) => {
+      if (i > 0) wrapper.appendChild(document.createElement('br'))
+      if (part) wrapper.appendChild(document.createTextNode(part))
+    })
+    return wrapper
   }
 }
 
@@ -35,7 +44,6 @@ export class InlineBlot {
       el.target = '_blank'
       el.rel = 'noopener noreferrer'
     }
-    el.textContent = text || ''
     if (attrs.bold) el.style.fontWeight = 'bold'
     if (attrs.italic) el.style.fontStyle = 'italic'
     if (attrs.color) el.style.color = attrs.color
@@ -45,6 +53,15 @@ export class InlineBlot {
     if (attrs.strike) decorations.push('line-through')
     if (decorations.length > 0) el.style.textDecoration = decorations.join(' ')
 
+    if (!text || !text.includes('\n')) {
+      el.textContent = text || ''
+      return el
+    }
+    const parts = text.split('\n')
+    parts.forEach((part, i) => {
+      if (i > 0) el.appendChild(document.createElement('br'))
+      if (part) el.appendChild(document.createTextNode(part))
+    })
     return el
   }
 }

@@ -2,10 +2,12 @@ import { useEffect, useRef, forwardRef, useImperativeHandle } from 'react'
 import * as Y from 'yjs'
 import { WebsocketProvider } from 'y-websocket'
 import { MiniQuill } from '../mini-quill/mini-quill'
-import { MiniQuillBinding } from '../mini-quill/MiniQuillBinding'
+import { QuillShim } from '../mini-quill/QuillShim'
+import { QuillBinding } from 'y-quill'
+import { RemoteCursorManager } from '../mini-quill/RemoteCursorManager'
 
-const DEV_COLLABORATION_URL = 'localhost:3000'
-const PROD_COLLABORATION_URL = 'doc-backend-rho.vercel.app'
+const DEV_COLLABORATION_URL = 'ws://localhost:3001'
+const PROD_COLLABORATION_URL = 'wss://doc-backend-rho.vercel.app'
 const COLLABORATION_URL = __DEV__ ? DEV_COLLABORATION_URL : PROD_COLLABORATION_URL
 
 export interface MiniQuillEditorRef {
@@ -20,8 +22,9 @@ const MiniQuillEditor = forwardRef<MiniQuillEditorRef, MiniQuillEditorProps>(
   ({ docId }, ref) => {
     const containerRef = useRef<HTMLDivElement>(null)
     const editorRef = useRef<MiniQuill | null>(null)
-    const bindingRef = useRef<MiniQuillBinding | null>(null)
+    const bindingRef = useRef<QuillBinding | null>(null)
     const providerRef = useRef<WebsocketProvider | null>(null)
+    const cursorManagerRef = useRef<RemoteCursorManager | null>(null)
 
     useImperativeHandle(ref, () => ({
       get editor() {
@@ -39,7 +42,7 @@ const MiniQuillEditor = forwardRef<MiniQuillEditorRef, MiniQuillEditorProps>(
       editorRef.current = editor
 
       // 协同
-      let binding: MiniQuillBinding | null = null
+      let binding: QuillBinding | null = null
       let provider: WebsocketProvider | null = null
       let ydoc: Y.Doc | null = null
 
@@ -48,7 +51,7 @@ const MiniQuillEditor = forwardRef<MiniQuillEditorRef, MiniQuillEditorProps>(
         const ytext = ydoc.getText('mini-quill')
 
         provider = new WebsocketProvider(
-          `wss://${COLLABORATION_URL}/collab`,
+          `${COLLABORATION_URL}/collab`,
           docId,
           ydoc,
           { connect: false }
@@ -68,13 +71,20 @@ const MiniQuillEditor = forwardRef<MiniQuillEditorRef, MiniQuillEditorProps>(
           color: getRandomCursorColor(),
         })
 
-        binding = new MiniQuillBinding(ytext, editor)
-        bindingRef.current = binding
+        const shim = new QuillShim(editor)
+        binding = new QuillBinding(ytext, shim, provider.awareness)
+        bindingRef.current = binding as any
+
+        // 启动远端光标同步
+        const cursorManager = new RemoteCursorManager(editor, provider.awareness)
+        cursorManagerRef.current = cursorManager
 
         provider.connect()
       }
 
       return () => {
+        cursorManagerRef.current?.destroy()
+        cursorManagerRef.current = null
         binding?.destroy()
         provider?.disconnect()
         ydoc?.destroy()

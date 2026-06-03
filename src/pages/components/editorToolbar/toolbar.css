@@ -141,15 +141,14 @@
 
 
 /* 下拉菜单容器基础样式 */
-#heading-dropdown, #table-dropdown {
+#heading-dropdown {
   position: relative;
   display: inline-block;
   margin: 0 4px;
 }
 
 /* 下拉触发按钮样式 */
-#heading-dropdown > span,
-#table-dropdown > button {
+#heading-dropdown > span {
   display: inline-flex;
   align-items: center;
   padding: 6px 12px;
@@ -161,8 +160,7 @@
   transition: all 0.2s ease;
 }
 
-#heading-dropdown > span:hover,
-#table-dropdown > button:hover {
+#heading-dropdown > span:hover {
   background-color: var(--bg-hover-solid);
   border-color: var(--border);
 }
@@ -174,7 +172,7 @@
 }
 
 /* 下拉菜单内容样式 */
-#heading-options, #table-options {
+#heading-options {
   position: absolute;
   top: 100%;
   left: 0;
@@ -200,111 +198,18 @@
   color: var(--primary);
 }
 
-/* 表格大小选择器样式 */
-.table-size-selector {
-  padding: 8px;
-}
-
-.table-row {
-  display: flex;
-}
-
-.table-cell-selector {
-  width: 24px;
-  height: 24px;
-  border: 1px solid var(--border);
-  background-color: var(--bg-card);
-  transition: all 0.1s ease;
-}
-
-/* 表格选择器交互效果 */
-.table-cell-selector:hover {
-  background-color: var(--primary-light);
-}
-
-/* 选中区域的样式 */
-.table-size-selector:hover .table-cell-selector {
-  background-color: var(--bg-hover-solid);
-}
-
-.table-size-selector:hover .table-cell-selector:hover,
-.table-size-selector:hover .table-cell-selector:hover ~ .table-cell-selector,
-.table-size-selector:hover .table-row:hover .table-cell-selector {
-  background-color: var(--primary-light);
-}
-
-/* 激活状态样式 */
-#table-dropdown .toolbar-button.active {
-  background-color: var(--primary-light);
-  border-color: var(--primary-border);
-  color: var(--primary);
-}
-
-/* 表格操作项样式 */
-#table-options .table-action {
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  font-size: 14px;
-  border-top: 1px solid var(--border);
-  margin-top: 4px;
-}
-
-#table-options .table-action:hover {
-  background-color: var(--primary-light);
-  color: var(--primary);
-}
-
-/* 表格选择器的交互反馈优化 */
-.table-cell-selector {
-  width: 24px;
-  height: 24px;
-  border: 1px solid var(--border);
-  background-color: var(--bg-card);
-  transition: all 0.1s ease;
-}
-
-/* 表格选择器的选中状态 */
-.table-cell-selector.selected {
-  background-color: var(--primary);
-}
-
-/* 优化表格选择的视觉反馈 */
-.table-size-selector {
-  position: relative;
-  padding: 8px;
-}
-
-/* 当鼠标在表格选择器上移动时，显示选中区域 */
-.table-size-selector:hover .table-cell-selector {
-  background-color: var(--bg-hover-solid);
-}
-
-.table-size-selector .table-row:hover .table-cell-selector {
-  background-color: var(--primary-light);
-}
-
-.table-size-selector .table-row .table-cell-selector:hover {
-  background-color: var(--primary);
-}
-
-.table-size-selector .table-row .table-cell-selector:hover ~ .table-cell-selector {
-  background-color: var(--primary-light);
-}
-
 /* 确保下拉菜单在悬停时保持显示 */
-#heading-dropdown.show-dropdown #heading-options,
-#table-dropdown.show-dropdown #table-options {
+#heading-dropdown.show-dropdown #heading-options {
   display: block;
 }
 
 /* 默认隐藏下拉菜单 */
-#heading-options, #table-options {
+#heading-options {
   display: none;
 }
 
 /* 避免下拉菜单超出视口 */
-#heading-options, #table-options {
+#heading-options {
   max-height: 300px;
   overflow-y: auto;
 }
@@ -441,3 +346,4 @@
   text-transform: uppercase;
   font-weight: 500;
 }
+

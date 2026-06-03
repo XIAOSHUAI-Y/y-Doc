@@ -50,11 +50,9 @@ body {
 
 /* 根容器样式 - 确保页面占满 */
 .editor-page-container {
-  height: 100vh;
   display: flex;
   flex-direction: column;
-  height: 100vh; /* 占满视口高度 */
-  overflow: hidden;
+  min-height: 100vh; /* 至少占满一屏，内容多时自然撑开 */
 }
 
 /* 文档ID不存在时的提示样式 */

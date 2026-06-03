@@ -113,6 +113,7 @@ export class MiniQuill {
     const previous = this.history[this.history.length - 1]
     this.delta = new Delta(JSON.parse(JSON.stringify(previous)))
     this.render()
+    this.emit('text-change')
   }
 
   /** 重做 */
@@ -122,6 +123,7 @@ export class MiniQuill {
     this.history.push(JSON.parse(JSON.stringify(next)))
     this.delta = new Delta(JSON.parse(JSON.stringify(next)))
     this.render()
+    this.emit('text-change')
   }
 
   /** 设置事件监听器 */
@@ -997,6 +999,7 @@ export class MiniQuill {
     this._setIndent(index, length, 0)
   }
 
+
   /**
    * 删除 Delta 中指定范围的内容
    * @param {number} index
@@ -1262,6 +1265,7 @@ export class MiniQuill {
     this.recordHistory()
     this.render()
   }
+
 
   /**
    * 从 DOM 同步内容到 Delta
