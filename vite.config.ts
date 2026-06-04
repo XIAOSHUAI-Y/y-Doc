@@ -6,6 +6,7 @@
 //   plugins: [react()],
 // })
 
+/// <reference types="vitest" />
 // vite.config.ts
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
@@ -33,6 +34,10 @@ export default defineConfig(({ mode }) => {
 		define: {
 			__DEV__: isDev,
 			__PROD__: !isDev,
+		},
+		test: {
+			environment: 'happy-dom',
+			globals: true,
 		},
 	};
 });
